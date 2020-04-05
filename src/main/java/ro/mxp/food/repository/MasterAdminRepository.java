@@ -18,6 +18,6 @@ public interface MasterAdminRepository extends CrudRepository<MasterAdmin, Long>
     @Transactional
     @Modifying
     @Query("update MasterAdmin m set m.email = :email, m.username = :username, m.password = :password where m.id = :id")
-    void updateMasterAdmin(@Param("id") Long id, @Param("email") String email, @Param("username") String username, @Param("password") String password);
+    void updateMasterAdminRepo(@Param("id") Long id, @Param("email") String email, @Param("username") String username, @Param("password") String password);
 
 }

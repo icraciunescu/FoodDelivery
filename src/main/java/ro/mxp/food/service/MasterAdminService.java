@@ -7,7 +7,6 @@ import ro.mxp.food.entity.MasterAdmin;
 import ro.mxp.food.repository.MasterAdminRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,11 +34,10 @@ public class MasterAdminService {
         } else {
             throw new Exception("admin exists!");
         }
-
     }
 
-    public void updateMasterAdminService(Long id, String email, String username, String password) {
-        masterAdminRepository.updateMasterAdmin(id, email, username, password);
+    public void updateMasterAdmin(Long id, String email, String username, String password) {
+        masterAdminRepository.updateMasterAdminRepo(id, email, username, password);
     }
 
 }
