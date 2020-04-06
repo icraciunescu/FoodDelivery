@@ -31,6 +31,7 @@ public class MasterAdminController {
         masterAdminService.updateMasterAdmin(id, email, username, password);
     }
 
+
 //    @ExceptionHandler({Exception.class})
 //    public ResponseEntity handleException() {
 //        return ResponseEntity.badRequest().body(Exception.class);
