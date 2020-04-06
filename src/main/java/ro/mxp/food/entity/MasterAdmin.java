@@ -10,10 +10,11 @@ public class MasterAdmin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
-    String email;
-    String username;
-    String password;
+    private Long id;
+
+    private String email;
+    private String username;
+    private String password;
 
     public MasterAdmin() {
     }

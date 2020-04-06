@@ -4,14 +4,14 @@ import java.util.Date;
 
 public class ClientDto {
 
-    Long id;
-    String email;
-    String username;
-    String password;
-    String phoneNumber;
-    String firstName;
-    String lastName;
-    Date dateOfBirth;
+    private Long id;
+    private String email;
+    private String username;
+    private String password;
+    private String phoneNumber;
+    private String firstName;
+    private String lastName;
+    private Date dateOfBirth;
 
     public ClientDto() {
     }

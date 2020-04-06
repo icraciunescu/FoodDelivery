@@ -10,15 +10,15 @@ public class Restaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    private Long id;
 
-    String email;
-    String username;
-    String password;
-    String restaurantName;
-    String restaurantSpecificity;
-    String restaurantAddress;
-    String restaurantPhone;
+    private String email;
+    private String username;
+    private String password;
+    private String restaurantName;
+    private String restaurantSpecificity;
+    private String restaurantAddress;
+    private String restaurantPhone;
 
     public Restaurant() {
     }
