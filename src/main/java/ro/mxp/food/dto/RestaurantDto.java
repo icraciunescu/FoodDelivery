@@ -77,4 +77,5 @@ public class RestaurantDto {
     public void setRestaurantPhone(String restaurantPhone) {
         this.restaurantPhone = restaurantPhone;
     }
+
 }

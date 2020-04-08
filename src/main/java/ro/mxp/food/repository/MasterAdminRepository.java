@@ -6,11 +6,14 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import ro.mxp.food.entity.MasterAdmin;
+import ro.mxp.food.entity.User;
 
 
 import java.util.List;
 
 public interface MasterAdminRepository extends CrudRepository<MasterAdmin, Long> {
+
+    MasterAdmin findByUsername(String username);
 
     @Override
     List<MasterAdmin> findAll();

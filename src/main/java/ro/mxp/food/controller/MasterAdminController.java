@@ -27,7 +27,7 @@ public class MasterAdminController {
     }
 
     @PutMapping("/{id}")
-    public void updateMasterAdminDto(@PathVariable Long id, @RequestParam String email, @RequestParam String username, @RequestParam String password ) {
+    public void updateMasterAdminDto(@PathVariable Long id, @RequestParam String email, @RequestParam String username, String password) {
         masterAdminService.updateMasterAdmin(id, email, username, password);
     }
 
