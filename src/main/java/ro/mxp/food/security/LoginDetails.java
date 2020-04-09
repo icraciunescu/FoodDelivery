@@ -1,16 +1,16 @@
-package ro.mxp.food.entity;
+package ro.mxp.food.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class User implements UserDetails {
+public class LoginDetails implements UserDetails {
 
     private String username;
     private String password;
 
-    public User() {
+    public LoginDetails() {
     }
 
     @Override

@@ -1,13 +1,13 @@
 package ro.mxp.food.dto;
 
-public class MasterAdminDto {
+public class MyUserDto {
 
     private Long id;
     private String email;
     private String username;
     private String password;
 
-    public MasterAdminDto() {
+    public MyUserDto() {
     }
 
     public Long getId() {

@@ -1,9 +1,15 @@
 package ro.mxp.food.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import ro.mxp.food.security.LoginDetails;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-public class MasterAdmin extends User {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class MyUser extends LoginDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,7 +19,17 @@ public class MasterAdmin extends User {
     private String username;
     private String password;
 
-    public MasterAdmin() {
+    @CreationTimestamp
+    @Temporal(TemporalType.DATE)
+    @Column(updatable = false)
+    public Date createDate;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.DATE)
+    @Column
+    public Date modifyDate;
+
+    public MyUser() {
     }
 
     public Long getId() {
@@ -46,6 +62,16 @@ public class MasterAdmin extends User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createDate = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        modifyDate = new Date();
     }
 
 }

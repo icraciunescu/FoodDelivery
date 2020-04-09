@@ -7,16 +7,16 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ro.mxp.food.service.MasterAdminDetailsServiceImpl;
+import ro.mxp.food.service.MyUserDetailsServiceImpl;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private MasterAdminDetailsServiceImpl masterAdminDetailsServiceImpl;
+    private MyUserDetailsServiceImpl myUserDetailsServiceImpl;
 
     @Autowired
-    public SecurityConfig(MasterAdminDetailsServiceImpl masterAdminDetailsServiceImpl) {
-        this.masterAdminDetailsServiceImpl = masterAdminDetailsServiceImpl;
+    public SecurityConfig(MyUserDetailsServiceImpl myUserDetailsServiceImpl) {
+        this.myUserDetailsServiceImpl = myUserDetailsServiceImpl;
     }
 
     @Override
@@ -31,7 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(masterAdminDetailsServiceImpl).passwordEncoder(getPasswordEncoder());
+        authenticationManagerBuilder
+                .userDetailsService(myUserDetailsServiceImpl).passwordEncoder(getPasswordEncoder());
     }
 
     private PasswordEncoder getPasswordEncoder() {
