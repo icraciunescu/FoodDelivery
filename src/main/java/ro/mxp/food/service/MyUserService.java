@@ -42,8 +42,13 @@ public class MyUserService {
         myUserRepository.updateMyUserRepo(id, email, username, password);
     }
 
-    public void deleteMyUser(Long id) {
-        myUserRepository.deleteById(id);
+    public void deleteMyUser(Long id) throws NullPointerException{
+        List<MyUser> myUserList = myUserRepository.findAll();
+        if (myUserList.size() > 1) {
+            myUserRepository.deleteById(id);
+        } else {
+            throw new NullPointerException("please update this user!");
+        }
     }
 
 }

@@ -1,33 +1,34 @@
 package ro.mxp.food.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import ro.mxp.food.security.LoginDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class MyUser extends LoginDetails {
+public class MyUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String email;
+    private String role;
+
+    @Column(nullable = false)
     private String username;
+
+    @Column(nullable = false)
     private String password;
 
     @CreationTimestamp
     @Temporal(TemporalType.DATE)
     @Column(updatable = false)
     public Date createDate;
-
-    @UpdateTimestamp
-    @Temporal(TemporalType.DATE)
-    @Column
-    public Date modifyDate;
 
     public MyUser() {
     }
@@ -46,6 +47,14 @@ public class MyUser extends LoginDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getUsername() {
@@ -69,9 +78,11 @@ public class MyUser extends LoginDetails {
         createDate = new Date();
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        modifyDate = new Date();
+    public List<String> getRoleList(){
+        if(role.length() > 0){
+            return Arrays.asList(role.split(","));
+        }
+        return new ArrayList<>();
     }
 
 }

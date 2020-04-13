@@ -8,7 +8,7 @@ import ro.mxp.food.service.MyUserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/myUser")
 public class MyUserController {
 
     private MyUserService myUserService;
