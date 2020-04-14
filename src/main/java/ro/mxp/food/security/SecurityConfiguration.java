@@ -31,17 +31,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/restaurant").hasRole("RESTAURANT")
                 // 1
-                .antMatchers("/**").authenticated()
-                // 2
                 .antMatchers("/myUser").hasRole("ADMIN")
+                // 2
+                .antMatchers("/restaurant").hasAnyRole("ADMIN", "RESTAURANT")
                 // 3
-                .antMatchers("/client").hasAnyRole("CLIENT", "ADMIN")
+                .antMatchers("/product").hasAnyRole("ADMIN", "RESTAURANT")
+                // 4
+                .antMatchers("/client").hasAnyRole("ADMIN", "RESTAURANT", "CLIENT")
+                // 5
+                .antMatchers("/").authenticated()
                 .and()
                 .httpBasic();
+
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
 
     @Bean

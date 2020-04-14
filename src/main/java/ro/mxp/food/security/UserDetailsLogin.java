@@ -22,7 +22,7 @@ public class UserDetailsLogin implements UserDetails {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         myUser.getRoleList().forEach(r -> {
-            GrantedAuthority authority = new SimpleGrantedAuthority(r);
+            GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + r);
             authorities.add(authority);
         });
 
