@@ -27,9 +27,9 @@ public class RestaurantController {
     }
 
     @PutMapping("/{id}")
-    public void updateRestaurantDto(@PathVariable Long id, @RequestParam String email, @RequestParam String username, @RequestParam String password,
+    public void updateRestaurantDto(@PathVariable Long id, @RequestParam String email, @RequestParam String username,
             @RequestParam String restaurantName, @RequestParam String restaurantSpecificity, @RequestParam String restaurantAddress, @RequestParam String restaurantPhone) {
-        restaurantService.updateRestaurant(id, email, username, password, restaurantName, restaurantSpecificity, restaurantAddress, restaurantPhone);
+        restaurantService.updateRestaurant(id, email, username, restaurantName, restaurantSpecificity, restaurantAddress, restaurantPhone);
     }
 
     @DeleteMapping("/{id}")

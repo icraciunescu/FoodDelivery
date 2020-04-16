@@ -29,8 +29,8 @@ public class MyUserController {
     }
 
     @PutMapping("/{id}")
-    public void updateMyUserDto(@PathVariable Long id, @RequestParam String email, @RequestParam String username, String password) {
-        myUserService.updateMyUser(id, email, username, password);
+    public void updateMyUserDto(@PathVariable Long id, @RequestParam String email, @RequestParam String username) {
+        myUserService.updateMyUser(id, email, username);
     }
 
     @DeleteMapping("/{id}")

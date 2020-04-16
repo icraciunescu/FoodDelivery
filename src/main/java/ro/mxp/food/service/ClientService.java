@@ -1,6 +1,8 @@
 package ro.mxp.food.service;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.mxp.food.dto.ClientDto;
 import ro.mxp.food.entity.Client;
@@ -12,6 +14,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class ClientService {
+
+    @Autowired
+    private BCryptPasswordEncoder getBCryptPasswordEncoder;
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -29,11 +34,12 @@ public class ClientService {
     }
 
     public void addClient(ClientDto clientDto) {
+        clientDto.setPassword(getBCryptPasswordEncoder.encode(clientDto.getPassword()));
         clientRepository.save(modelMapper.map(clientDto, Client.class));
     }
 
-    public void updateClient(Long id, String email, String username, String password, String phoneNumber, String firstName, String lastName, Date dateOfBirth) {
-        clientRepository.updateClientRepo(id, email, username, password, phoneNumber, firstName, lastName, dateOfBirth);
+    public void updateClient(Long id, String email, String username, String phoneNumber, String firstName, String lastName, Date dateOfBirth) {
+        clientRepository.updateClientRepo(id, email, username, phoneNumber, firstName, lastName, dateOfBirth);
     }
 
     public void deleteClient(Long id) {
