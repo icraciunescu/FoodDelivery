@@ -1,6 +1,5 @@
 package ro.mxp.food.service;
 
-import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,7 +36,7 @@ public class RestaurantService {
                 .collect(Collectors.toList());
     }
 
-    public void addRestaurant(@NotNull RestaurantDto restaurantDto) {
+    public void addRestaurant(RestaurantDto restaurantDto) {
         restaurantDto.setPassword(getBCryptPasswordEncoder.encode(restaurantDto.getPassword()));
         restaurantRepository.save(modelMapper.map(restaurantDto, Restaurant.class));
     }

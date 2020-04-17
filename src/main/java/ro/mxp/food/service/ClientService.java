@@ -1,6 +1,5 @@
 package ro.mxp.food.service;
 
-import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,6 +9,7 @@ import ro.mxp.food.entity.Client;
 import ro.mxp.food.repository.ClientRepository;
 import ro.mxp.food.utils.CurrentUsername;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,7 +38,7 @@ public class ClientService {
                 .collect(Collectors.toList());
     }
 
-    public void addClient(@NotNull ClientDto clientDto) {
+    public void addClient(ClientDto clientDto) {
         clientDto.setPassword(getBCryptPasswordEncoder.encode(clientDto.getPassword()));
         clientRepository.save(modelMapper.map(clientDto, Client.class));
     }
