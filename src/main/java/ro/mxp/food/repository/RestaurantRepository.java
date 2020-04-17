@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface RestaurantRepository extends CrudRepository<Restaurant, Long> {
 
+    Restaurant findByUsername(String string);
+
     @Override
     List<Restaurant> findAll();
 

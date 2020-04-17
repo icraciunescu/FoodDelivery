@@ -1,5 +1,6 @@
 package ro.mxp.food.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ro.mxp.food.dto.ClientDto;
 import ro.mxp.food.entity.Client;
 import ro.mxp.food.repository.ClientRepository;
+import ro.mxp.food.utils.CurrentUsername;
 
 import java.util.Date;
 import java.util.List;
@@ -17,6 +19,9 @@ public class ClientService {
 
     @Autowired
     private BCryptPasswordEncoder getBCryptPasswordEncoder;
+
+    @Autowired
+    private CurrentUsername currentUsername;
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -33,17 +38,23 @@ public class ClientService {
                 .collect(Collectors.toList());
     }
 
-    public void addClient(ClientDto clientDto) {
+    public void addClient(@NotNull ClientDto clientDto) {
         clientDto.setPassword(getBCryptPasswordEncoder.encode(clientDto.getPassword()));
         clientRepository.save(modelMapper.map(clientDto, Client.class));
     }
 
     public void updateClient(Long id, String email, String username, String phoneNumber, String firstName, String lastName, Date dateOfBirth) {
-        clientRepository.updateClientRepo(id, email, username, phoneNumber, firstName, lastName, dateOfBirth);
+        Client client = clientRepository.findByUsername(currentUsername.displayCurrentUsername());
+        if (client != null && client.getId().equals(id)) {
+            clientRepository.updateClientRepo(id, email, username, phoneNumber, firstName, lastName, dateOfBirth);
+        }
     }
 
     public void deleteClient(Long id) {
-        clientRepository.deleteById(id);
+        Client client = clientRepository.findByUsername(currentUsername.displayCurrentUsername());
+        if (client != null && client.getId().equals(id)) {
+            clientRepository.deleteById(id);
+        }
     }
 
 }

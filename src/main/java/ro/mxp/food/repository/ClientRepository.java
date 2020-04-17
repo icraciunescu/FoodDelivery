@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface ClientRepository extends CrudRepository<Client, Long> {
 
+    Client findByUsername(String username);
+
     @Override
     List<Client> findAll();
 

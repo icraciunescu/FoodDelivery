@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ro.mxp.food.dto.MyUserDto;
 import ro.mxp.food.entity.MyUser;
 import ro.mxp.food.repository.MyUserRepository;
+import ro.mxp.food.utils.CurrentUsername;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +17,9 @@ public class MyUserService {
 
     @Autowired
     private BCryptPasswordEncoder getBCryptPasswordEncoder;
+
+    @Autowired
+    private CurrentUsername currentUsername;
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -44,15 +48,19 @@ public class MyUserService {
     }
 
     public void updateMyUser(Long id, String email, String username) {
-        myUserRepository.updateMyUserRepo(id, email, username);
+        MyUser myUser = myUserRepository.findByUsername(currentUsername.displayCurrentUsername());
+        if (myUser != null && myUser.getId().equals(id)) {
+            myUserRepository.updateMyUserRepo(id, email, username);
+        }
     }
 
     public void deleteMyUser(Long id) throws NullPointerException{
+        MyUser myUser = myUserRepository.findByUsername(currentUsername.displayCurrentUsername());
         List<MyUser> myUserList = myUserRepository.findAll();
-        if (myUserList.size() > 1) {
+        if (myUserList.size() > 1 && myUser != null && myUser.getId().equals(id)) {
+            throw new NullPointerException("!!! you are ADMIN !!!");
+        } else if (myUserList.size() > 1 && myUser != null && !myUser.getId().equals(id)) {
             myUserRepository.deleteById(id);
-        } else {
-            throw new NullPointerException("please update this user!");
         }
     }
 

@@ -19,7 +19,7 @@ public class MyUser {
     private String email;
     private String role;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
