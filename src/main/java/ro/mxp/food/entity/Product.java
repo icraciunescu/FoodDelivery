@@ -11,8 +11,11 @@ public class Product {
 
     private String productName;
     private String productType;
-    private long productPrice;
+    private Long productPrice;
     private String productIngredients;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Restaurant restaurant;
 
     public Product() {
     }
@@ -41,11 +44,11 @@ public class Product {
         this.productType = productType;
     }
 
-    public long getProductPrice() {
+    public Long getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(long productPrice) {
+    public void setProductPrice(Long productPrice) {
         this.productPrice = productPrice;
     }
 
@@ -57,4 +60,11 @@ public class Product {
         this.productIngredients = productIngredients;
     }
 
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 }

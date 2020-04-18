@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ro.mxp.food.entity.MyUser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class UserDetailsLogin implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        myUser.getRoleList().forEach(r -> {
+        getRoleList().forEach(r -> {
             GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + r);
             authorities.add(authority);
         });
@@ -57,6 +58,13 @@ public class UserDetailsLogin implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public List<String> getRoleList(){
+        if(myUser.getRole().length() > 0){
+            return Arrays.asList(myUser.getRole().split(","));
+        }
+        return new ArrayList<>();
     }
 
 }

@@ -2,6 +2,7 @@ package ro.mxp.food.controller;
 
 import org.springframework.web.bind.annotation.*;
 import ro.mxp.food.dto.ProductDto;
+import ro.mxp.food.entity.Restaurant;
 import ro.mxp.food.service.ProductService;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public void updateProductDto(@PathVariable Long id, @RequestParam String productName, @RequestParam String productType, @RequestParam long productPrice,
+    public void updateProductDto(@PathVariable Long id, @RequestParam String productName, @RequestParam String productType, @RequestParam Long productPrice,
                                  @RequestParam String productIngredients) {
         productService.updateProduct(id, productName, productType, productPrice, productIngredients);
     }

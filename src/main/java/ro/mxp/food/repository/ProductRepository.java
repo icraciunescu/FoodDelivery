@@ -18,7 +18,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     @Modifying
     @Query("update Product p set p.productName=:productName, p.productType=:productType, p.productPrice=:productPrice, " +
             "p.productIngredients=:productIngredients where p.id=:id")
-    void updateProductRepo(@Param("id") Long id, @Param("productName") String productName, @Param("productType") String productType, @Param("productPrice") long productPrice,
+    void updateProductRepo(@Param("id") Long id, @Param("productName") String productName, @Param("productType") String productType, @Param("productPrice") Long productPrice,
                            @Param("productIngredients") String productIngredients);
 
 }

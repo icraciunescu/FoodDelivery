@@ -3,10 +3,7 @@ package ro.mxp.food.entity;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -76,13 +73,6 @@ public class MyUser {
     @PrePersist
     protected void onCreate() {
         createDate = new Date();
-    }
-
-    public List<String> getRoleList(){
-        if(role.length() > 0){
-            return Arrays.asList(role.split(","));
-        }
-        return new ArrayList<>();
     }
 
 }

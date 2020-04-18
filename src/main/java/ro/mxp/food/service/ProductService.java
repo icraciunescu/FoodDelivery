@@ -1,16 +1,27 @@
 package ro.mxp.food.service;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.mxp.food.dto.ProductDto;
 import ro.mxp.food.entity.Product;
+import ro.mxp.food.entity.Restaurant;
 import ro.mxp.food.repository.ProductRepository;
+import ro.mxp.food.repository.RestaurantRepository;
+import ro.mxp.food.utils.CurrentUsername;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
+
+    @Autowired
+    private CurrentUsername currentUsername;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -21,17 +32,30 @@ public class ProductService {
     }
 
     public List<ProductDto> getAllProduct() {
-        return productRepository.findAll()
+        List<ProductDto> productDtoList = productRepository.findAll()
                 .stream()
                 .map(product -> modelMapper.map(product, ProductDto.class))
                 .collect(Collectors.toList());
+
+        if (restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()) instanceof Restaurant) {
+            List<ProductDto> productsByRestaurant = new LinkedList<>();
+            for (ProductDto productDto : productDtoList) {
+                if (productDto.getRestaurant().equals(restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()))) {
+                    productsByRestaurant.add(productDto);
+                }
+            }
+            return productsByRestaurant;
+        }
+
+        return productDtoList;
     }
 
     public void addProduct(ProductDto productDto) {
+        productDto.setRestaurant(restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()));
         productRepository.save(modelMapper.map(productDto, Product.class));
     }
 
-    public void updateProduct(Long id, String productName, String productType, long productPrice, String productIngredients) {
+    public void updateProduct(Long id, String productName, String productType, Long productPrice, String productIngredients) {
         productRepository.updateProductRepo(id, productName, productType, productPrice, productIngredients);
     }
 

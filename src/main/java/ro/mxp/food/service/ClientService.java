@@ -9,7 +9,6 @@ import ro.mxp.food.entity.Client;
 import ro.mxp.food.repository.ClientRepository;
 import ro.mxp.food.utils.CurrentUsername;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;

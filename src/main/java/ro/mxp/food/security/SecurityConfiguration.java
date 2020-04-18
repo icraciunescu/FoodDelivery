@@ -3,6 +3,7 @@ package ro.mxp.food.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,16 +32,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                // 1
                 .antMatchers("/myUser").hasRole("ADMIN")
-                // 2
-                .antMatchers("/restaurant").hasAnyRole("ADMIN", "RESTAURANT")
-                // 3
-                .antMatchers("/product").hasAnyRole("ADMIN", "RESTAURANT")
-                // 4
-                .antMatchers("/client").hasAnyRole("ADMIN", "CLIENT")
-                // 5
-                .antMatchers("/").authenticated()
+                .antMatchers(HttpMethod.PUT, "/restaurant/**").hasRole("RESTAURANT")
+                .antMatchers(HttpMethod.DELETE, "/restaurant/**").hasAnyRole("ADMIN", "RESTAURANT")
+                .antMatchers(HttpMethod.POST, "/product").hasRole("RESTAURANT")
+                .antMatchers(HttpMethod.PUT, "/product/**").hasRole("RESTAURANT")
+                .antMatchers(HttpMethod.DELETE, "/product/**").hasAnyRole("ADMIN", "RESTAURANT")
+                .antMatchers(HttpMethod.GET, "/client").hasAnyRole("ADMIN", "RESTAURANT")
+                .antMatchers(HttpMethod.PUT, "/client").hasRole("CLIENT")
+                .antMatchers(HttpMethod.DELETE, "/client/**").hasAnyRole("ADMIN", "RESTAURANT", "CLIENT")
+                .antMatchers("/display").authenticated()
+                .antMatchers("/").permitAll()
                 .and()
                 .httpBasic();
 
@@ -50,8 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public BCryptPasswordEncoder getBCryptPasswordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
+        return new BCryptPasswordEncoder();
     }
 
 }
