@@ -5,28 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.mxp.food.dto.CartDto;
 import ro.mxp.food.entity.Cart;
-import ro.mxp.food.entity.Client;
-import ro.mxp.food.entity.Restaurant;
 import ro.mxp.food.repository.CartRepository;
-import ro.mxp.food.repository.ClientRepository;
-import ro.mxp.food.repository.RestaurantRepository;
-import ro.mxp.food.utils.CurrentUsername;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class CartService {
-
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-
-    @Autowired
-    private ClientRepository clientRepository;
-
-    @Autowired
-    private CurrentUsername currentUsername;
 
     private ModelMapper modelMapper = new ModelMapper();
 
