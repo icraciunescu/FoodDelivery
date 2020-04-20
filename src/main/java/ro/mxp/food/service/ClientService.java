@@ -6,7 +6,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.mxp.food.dto.ClientDto;
 import ro.mxp.food.entity.Client;
+import ro.mxp.food.entity.MyUser;
 import ro.mxp.food.repository.ClientRepository;
+import ro.mxp.food.repository.MyUserRepository;
 import ro.mxp.food.utils.CurrentUsername;
 
 import java.util.Date;
@@ -21,6 +23,9 @@ public class ClientService {
 
     @Autowired
     private CurrentUsername currentUsername;
+
+    @Autowired
+    private MyUserRepository myUserRepository;
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -51,7 +56,7 @@ public class ClientService {
 
     public void deleteClient(Long id) {
         Client client = clientRepository.findByUsername(currentUsername.displayCurrentUsername());
-        if (client != null && client.getId().equals(id)) {
+        if ((client != null && client.getId().equals(id)) || myUserRepository.findByUsername(currentUsername.displayCurrentUsername()) instanceof MyUser) {
             clientRepository.deleteById(id);
         }
     }

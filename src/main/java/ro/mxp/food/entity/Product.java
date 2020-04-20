@@ -1,6 +1,7 @@
 package ro.mxp.food.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Product {
@@ -14,8 +15,11 @@ public class Product {
     private Long productPrice;
     private String productIngredients;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private Restaurant restaurant;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Cart> cartList;
 
     public Product() {
     }

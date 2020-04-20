@@ -1,6 +1,7 @@
 package ro.mxp.food.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Restaurant extends MyUser {
@@ -9,6 +10,12 @@ public class Restaurant extends MyUser {
     private String restaurantSpecificity;
     private String restaurantAddress;
     private String restaurantPhone;
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    private List<Product> productList;
+
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    private List<Cart> cartList;
 
     public Restaurant() {
     }
