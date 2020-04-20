@@ -40,6 +40,7 @@ public class MyUserService {
     public void addMyUser(MyUserDto myUserDto) throws Exception {
         List<MyUser> myUserList = myUserRepository.findAll();
         if (myUserList.isEmpty()) {
+            myUserDto.setRole("ADMIN");
             myUserDto.setPassword(getBCryptPasswordEncoder.encode(myUserDto.getPassword()));
             myUserRepository.save(modelMapper.map(myUserDto, MyUser.class));
         } else {

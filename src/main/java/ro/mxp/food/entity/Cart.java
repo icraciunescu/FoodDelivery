@@ -14,12 +14,6 @@ public class Cart {
     @ManyToOne
     private Product product;
 
-    @ManyToOne
-    private Client client;
-
-    @ManyToOne
-    private Restaurant restaurant;
-
     public Cart() {
     }
 
@@ -45,22 +39,6 @@ public class Cart {
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
     }
 
 }

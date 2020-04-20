@@ -43,6 +43,7 @@ public class ClientService {
     }
 
     public void addClient(ClientDto clientDto) {
+        clientDto.setRole("CLIENT");
         clientDto.setPassword(getBCryptPasswordEncoder.encode(clientDto.getPassword()));
         clientRepository.save(modelMapper.map(clientDto, Client.class));
     }

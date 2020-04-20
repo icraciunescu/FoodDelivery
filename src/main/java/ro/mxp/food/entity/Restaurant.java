@@ -14,9 +14,6 @@ public class Restaurant extends MyUser {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<Product> productList;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<Cart> cartList;
-
     public Restaurant() {
     }
 

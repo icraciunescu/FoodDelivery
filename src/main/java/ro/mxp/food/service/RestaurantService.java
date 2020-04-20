@@ -42,6 +42,7 @@ public class RestaurantService {
     }
 
     public void addRestaurant(RestaurantDto restaurantDto) {
+        restaurantDto.setRole("RESTAURANT");
         restaurantDto.setPassword(getBCryptPasswordEncoder.encode(restaurantDto.getPassword()));
         restaurantRepository.save(modelMapper.map(restaurantDto, Restaurant.class));
     }

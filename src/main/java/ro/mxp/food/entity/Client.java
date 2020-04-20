@@ -2,7 +2,6 @@ package ro.mxp.food.entity;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 public class Client extends MyUser {
@@ -12,9 +11,6 @@ public class Client extends MyUser {
     private String lastName;
     @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
-
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<Cart> cartList;
 
     public Client() {
     }

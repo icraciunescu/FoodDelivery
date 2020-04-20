@@ -43,26 +43,6 @@ public class CartService {
                 .map(cart -> modelMapper.map(cart, CartDto.class))
                 .collect(Collectors.toList());
 
-        if (restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()) instanceof Restaurant) {
-            List<CartDto> cartDtoByRestaurant = new LinkedList<>();
-            for(CartDto cartDto : cartDtoList) {
-                if (cartDto.getRestaurant().equals(restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()))) {
-                    cartDtoByRestaurant.add(cartDto);
-                }
-            }
-            return cartDtoByRestaurant;
-        }
-
-        if (clientRepository.findByUsername(currentUsername.displayCurrentUsername()) instanceof Client) {
-            List<CartDto> cartDtoByClient = new LinkedList<>();
-            for (CartDto cartDto : cartDtoList) {
-                if (cartDto.getClient().equals(clientRepository.findByUsername(currentUsername.displayCurrentUsername()))) {
-                    cartDtoByClient.add(cartDto);
-                }
-            }
-            return cartDtoByClient;
-        }
-
         return cartDtoList;
     }
 
