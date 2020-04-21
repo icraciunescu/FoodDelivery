@@ -9,7 +9,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class FoodDeliveryApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(FoodDeliveryApplication.class, args);
+
 	}
 
 }

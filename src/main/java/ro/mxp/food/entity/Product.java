@@ -71,4 +71,5 @@ public class Product {
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
+
 }

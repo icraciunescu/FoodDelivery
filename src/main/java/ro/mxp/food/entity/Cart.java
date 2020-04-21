@@ -14,6 +14,9 @@ public class Cart {
     @ManyToOne
     private Product product;
 
+    @ManyToOne
+    private Client client;
+
     public Cart() {
     }
 
@@ -39,6 +42,14 @@ public class Cart {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
 }

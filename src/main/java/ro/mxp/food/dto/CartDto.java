@@ -1,5 +1,6 @@
 package ro.mxp.food.dto;
 
+import ro.mxp.food.entity.Client;
 import ro.mxp.food.entity.Product;
 
 public class CartDto {
@@ -7,6 +8,7 @@ public class CartDto {
     private Long id;
     private int quantity;
     private Product product;
+    private Client client;
 
     public CartDto() {
     }
@@ -33,6 +35,14 @@ public class CartDto {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
 }
