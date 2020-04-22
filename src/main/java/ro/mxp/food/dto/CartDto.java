@@ -6,7 +6,7 @@ import ro.mxp.food.entity.Product;
 public class CartDto {
 
     private Long id;
-    private int quantity;
+    private int quantityProduct;
     private Product product;
     private Client client;
 
@@ -21,12 +21,12 @@ public class CartDto {
         this.id = id;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getQuantityProduct() {
+        return quantityProduct;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setQuantityProduct(int quantityProduct) {
+        this.quantityProduct = quantityProduct;
     }
 
     public Product getProduct() {

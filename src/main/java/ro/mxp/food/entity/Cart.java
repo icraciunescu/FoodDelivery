@@ -9,7 +9,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private int quantity;
+    private int quantityProduct;
 
     @ManyToOne
     private Product product;
@@ -28,12 +28,12 @@ public class Cart {
         this.id = id;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getQuantityProduct() {
+        return quantityProduct;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setQuantityProduct(int quantity) {
+        this.quantityProduct = quantity;
     }
 
     public Product getProduct() {

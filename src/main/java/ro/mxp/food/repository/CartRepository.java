@@ -16,7 +16,7 @@ public interface CartRepository extends CrudRepository<Cart, Long> {
 
     @Transactional
     @Modifying
-    @Query("update Cart c set c.quantity=:quantity where c.id=:id")
+    @Query("update Cart c set c.quantityProduct=:quantity where c.id=:id")
     void updateCartRepo(@Param("id") Long id, @Param("quantity") int quantity);
 
 }
