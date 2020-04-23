@@ -1,55 +1,35 @@
 package ro.mxp.food.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long Id;
 
-    private int quantityProduct;
-
-    @ManyToOne
-    private Product product;
-
-    @ManyToOne
-    private Client client;
+    @OneToMany
+    private List<ProductInCart> productInCartList;
 
     public Cart() {
     }
 
     public Long getId() {
-        return id;
+        return Id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        Id = id;
     }
 
-    public int getQuantityProduct() {
-        return quantityProduct;
+    public List<ProductInCart> getProductInCartList() {
+        return productInCartList;
     }
 
-    public void setQuantityProduct(int quantity) {
-        this.quantityProduct = quantity;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
+    public void setProductInCartList(List<ProductInCart> productInCartList) {
+        this.productInCartList = productInCartList;
     }
 
 }

@@ -18,24 +18,14 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @GetMapping
+    @GetMapping("/pending")
     public List<CartDto> getAllCartDto() {
-        return cartService.getAllCart();
+        return cartService.getAllCartDto();
     }
 
-    @PostMapping
+    @PostMapping("/send_command")
     public void addCartDto(@RequestBody CartDto cartDto) {
-        cartService.addCartDto(cartDto);
-    }
-
-    @PutMapping("/{id}")
-    public void updateCartDto(@PathVariable Long id, @RequestParam int quantity) {
-        cartService.updateCartService(id, quantity);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteCartDto(@PathVariable Long id) {
-        cartService.deleteCart(id);
+        cartService.addCart(cartDto);
     }
 
 }

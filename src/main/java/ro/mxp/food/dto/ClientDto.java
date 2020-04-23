@@ -1,6 +1,9 @@
 package ro.mxp.food.dto;
 
+import ro.mxp.food.entity.ProductInCart;
+
 import java.util.Date;
+import java.util.List;
 
 public class ClientDto extends MyUserDto {
 
@@ -8,6 +11,7 @@ public class ClientDto extends MyUserDto {
     private String firstName;
     private String lastName;
     private Date dateOfBirth;
+    private List<ProductInCart> productInCart;
 
     public ClientDto() {
     }

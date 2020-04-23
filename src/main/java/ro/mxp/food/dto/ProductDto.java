@@ -1,5 +1,6 @@
 package ro.mxp.food.dto;
 
+import ro.mxp.food.entity.ProductInCart;
 import ro.mxp.food.entity.Restaurant;
 
 public class ProductDto {
@@ -10,6 +11,7 @@ public class ProductDto {
     private Long productPrice;
     private String productIngredients;
     private Restaurant restaurant;
+    private ProductInCart productInCart;
 
     public ProductDto() {
     }
@@ -61,4 +63,5 @@ public class ProductDto {
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
+
 }

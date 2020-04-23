@@ -13,8 +13,8 @@ public class Client extends MyUser {
     @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Cart> cart;
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private List<ProductInCart> productInCart;
 
     public Client() {
     }

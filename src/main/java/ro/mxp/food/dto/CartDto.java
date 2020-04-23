@@ -1,48 +1,31 @@
 package ro.mxp.food.dto;
 
-import ro.mxp.food.entity.Client;
-import ro.mxp.food.entity.Product;
+import ro.mxp.food.entity.ProductInCart;
+
+import java.util.List;
 
 public class CartDto {
 
-    private Long id;
-    private int quantityProduct;
-    private Product product;
-    private Client client;
+    private Long Id;
+    private List<ProductInCart> productInCartList;
 
     public CartDto() {
     }
 
     public Long getId() {
-        return id;
+        return Id;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        Id = id;
     }
 
-    public int getQuantityProduct() {
-        return quantityProduct;
+    public List<ProductInCart> getProductInCartList() {
+        return productInCartList;
     }
 
-    public void setQuantityProduct(int quantityProduct) {
-        this.quantityProduct = quantityProduct;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
+    public void setProductInCartList(List<ProductInCart> productInCartList) {
+        this.productInCartList = productInCartList;
     }
 
 }
