@@ -12,29 +12,28 @@ import java.util.List;
 public class MyUserController {
 
     private MyUserService myUserService;
-
     @Autowired
     public MyUserController(MyUserService myUserService) {
         this.myUserService = myUserService;
     }
 
     @GetMapping
-    public List<MyUserDto> getAllMyUserDto() {
+    public List<MyUserDto> getAllMyUser() {
         return myUserService.getAllMyUser();
     }
 
     @PostMapping
-    public void addMyUserDto(@RequestBody MyUserDto myUserDto) throws Exception {
+    public void addMyUser(@RequestBody MyUserDto myUserDto) throws Exception {
         myUserService.addMyUser(myUserDto);
     }
 
     @PutMapping("/{id}")
-    public void updateMyUserDto(@PathVariable Long id, @RequestParam String email, @RequestParam String username) {
+    public void updateMyUser(@PathVariable Long id, @RequestParam String email, @RequestParam String username) {
         myUserService.updateMyUser(id, email, username);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMyUserDto(@PathVariable Long id) {
+    public void deleteMyUser(@PathVariable Long id) {
         myUserService.deleteMyUser(id);
     }
 

@@ -12,29 +12,28 @@ import java.util.List;
 public class ProductInCartController {
 
     private ProductInCartService productInCartService;
-
     @Autowired
     public ProductInCartController(ProductInCartService productInCartService) {
         this.productInCartService = productInCartService;
     }
 
     @GetMapping
-    public List<ProductInCartDto> getAllProductInCartDto() {
+    public List<ProductInCartDto> getAllProductInCart() {
         return productInCartService.getAllProductInCart();
     }
 
     @PostMapping
-    public void addProductInCartDto(@RequestBody ProductInCartDto productInCartDto) {
-        productInCartService.addProductInCartDto(productInCartDto);
+    public void addProductInCart(@RequestBody ProductInCartDto productInCartDto) {
+        productInCartService.addProductInCart(productInCartDto);
     }
 
     @PutMapping("/{id}")
-    public void updateProductInCartDto(@PathVariable Long id, @RequestParam int quantity) {
+    public void updateProductInCart(@PathVariable Long id, @RequestParam int quantity) {
         productInCartService.updateProductInCartService(id, quantity);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProductInCartDto(@PathVariable Long id) {
+    public void deleteProductInCart(@PathVariable Long id) {
         productInCartService.deleteProductInCart(id);
     }
 

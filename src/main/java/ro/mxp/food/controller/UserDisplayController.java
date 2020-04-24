@@ -10,7 +10,6 @@ import ro.mxp.food.service.UserDisplayService;
 public class UserDisplayController {
 
     private UserDisplayService userDisplayService;
-
     @Autowired
     public UserDisplayController(UserDisplayService userDisplayService) {
         this.userDisplayService = userDisplayService;

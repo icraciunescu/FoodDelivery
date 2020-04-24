@@ -12,7 +12,6 @@ import ro.mxp.food.repository.MyUserRepository;
 public class UserDetailsServiceLogin implements UserDetailsService {
 
     private MyUserRepository myUserRepository;
-
     @Autowired
     public UserDetailsServiceLogin(MyUserRepository myUserRepository) {
         this.myUserRepository = myUserRepository;

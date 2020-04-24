@@ -4,21 +4,21 @@ import ro.mxp.food.entity.ProductInCart;
 
 import java.util.List;
 
-public class CartDto {
+public class ProductForDeliveryDto {
 
-    private Long Id;
+    private Long id;
     private List<ProductInCart> productInCartList;
     private Long valueCart;
 
-    public CartDto() {
+    public ProductForDeliveryDto() {
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public List<ProductInCart> getProductInCartList() {

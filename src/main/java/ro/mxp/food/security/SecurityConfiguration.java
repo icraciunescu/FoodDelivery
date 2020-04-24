@@ -15,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private UserDetailsServiceLogin userDetailsServiceLogin;
-
     @Autowired
     public SecurityConfiguration(UserDetailsServiceLogin userDetailsServiceLogin) {
         this.userDetailsServiceLogin = userDetailsServiceLogin;
@@ -45,8 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/product_in_cart").hasRole("CLIENT")
                 .antMatchers(HttpMethod.PUT, "/product_in_cart/**").hasRole("CLIENT")
                 .antMatchers(HttpMethod.DELETE, "/product_in_cart/**").hasAnyRole("ADMIN", "CLIENT")
-                .antMatchers(HttpMethod.GET, "/cart/pending").hasAnyRole("RESTAURANT", "CLIENT")
-                .antMatchers(HttpMethod.GET, "/cart/send_command").hasRole("CLIENT")
+                .antMatchers(HttpMethod.GET, "/cart").hasRole("CLIENT")
                 .antMatchers("/product_in_cart").authenticated()
                 .antMatchers("/display").authenticated()
                 .antMatchers("/").permitAll()

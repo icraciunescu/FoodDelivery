@@ -4,18 +4,19 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.mxp.food.dto.CartDto;
+import ro.mxp.food.dto.ProductForDeliveryDto;
 import ro.mxp.food.entity.Cart;
-import ro.mxp.food.entity.Client;
+import ro.mxp.food.entity.ProductForDelivery;
 import ro.mxp.food.entity.ProductInCart;
-import ro.mxp.food.entity.Restaurant;
 import ro.mxp.food.repository.CartRepository;
 import ro.mxp.food.repository.ClientRepository;
+import ro.mxp.food.repository.ProductForDeliveryRepository;
 import ro.mxp.food.repository.ProductInCartRepository;
-import ro.mxp.food.repository.RestaurantRepository;
 import ro.mxp.food.utils.CurrentUsername;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,20 +29,18 @@ public class CartService {
     @Autowired
     private ClientRepository clientRepository;
     @Autowired
-    private RestaurantRepository restaurantRepository;
+    private ProductForDeliveryRepository productForDeliveryRepository;
 
     private ModelMapper modelMapper = new ModelMapper();
 
     private CartRepository cartRepository;
-
     @Autowired
     public CartService(CartRepository cartRepository) {
         this.cartRepository = cartRepository;
     }
 
-    public List<CartDto> getAllCartDto() {
+    public List<CartDto> getAllCart() {
         List<Cart> cartList = new LinkedList<>();
-        if (clientRepository.findByUsername(currentUsername.displayCurrentUsername()) instanceof Client) {
             List<Cart> cartByClient = new LinkedList<>();
             for (Cart cart : cartRepository.findAll()) {
                 if (cart.getProductInCartList().size() > 0) {
@@ -51,23 +50,10 @@ public class CartService {
                 }
             }
             cartList.addAll(cartByClient);
-        }
-        if (restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()) instanceof Restaurant) {
-            List<Cart> cartByRestaurant = new LinkedList<>();
-            for (Cart cart : cartRepository.findAll()) {
-                if (cart.getProductInCartList().size() > 0) {
-                    if (restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()).equals(cart.getProductInCartList().get(0).getProduct().getRestaurant())) {
-                        cartByRestaurant.add(cart);
-                    }
-                }
-            }
-            cartList.addAll(cartByRestaurant);
-        }
         return cartList
                 .stream()
                 .map(cart -> modelMapper.map(cart, CartDto.class))
                 .collect(Collectors.toList());
-
     }
 
     public void addCart(CartDto cartDto) {
@@ -78,13 +64,29 @@ public class CartService {
             }
         }
         List<ProductInCart> productInCartByClientAndRestaurant = new LinkedList<>();
+        long price = 0;
         for (ProductInCart productInCart : productInCartByClient) {
             if (productInCart.getProduct().getRestaurant().equals(productInCartByClient.get(0).getProduct().getRestaurant())) {
                 productInCartByClientAndRestaurant.add(productInCart);
+                price = price + productInCart.getProduct().getProductPrice() * productInCart.getQuantityProduct();
             }
         }
         cartDto.setProductInCartList(productInCartByClientAndRestaurant);
+        cartDto.setValueCart(price);
         cartRepository.save(modelMapper.map(cartDto, Cart.class));
+    }
+
+    public void pendingCart(Long id) {
+        Optional<Cart> optionalCart = cartRepository.findById(id);
+        Cart cart =  optionalCart.get();
+        ProductForDeliveryDto productForDeliveryDto = modelMapper.map(cart, ProductForDeliveryDto.class);
+        ProductForDelivery productForDelivery = modelMapper.map(productForDeliveryDto, ProductForDelivery.class);
+        productForDeliveryRepository.save(productForDelivery);
+        cartRepository.deleteById(id);
+    }
+
+    public void deleteCart(Long id) {
+        cartRepository.deleteById(id);
     }
 
 }

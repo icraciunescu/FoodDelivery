@@ -17,14 +17,12 @@ public class MyUserService {
 
     @Autowired
     private BCryptPasswordEncoder getBCryptPasswordEncoder;
-
     @Autowired
     private CurrentUsername currentUsername;
 
     private ModelMapper modelMapper = new ModelMapper();
 
     private MyUserRepository myUserRepository;
-
     @Autowired
     public MyUserService(MyUserRepository myUserRepository) {
         this.myUserRepository = myUserRepository;

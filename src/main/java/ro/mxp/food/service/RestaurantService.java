@@ -19,17 +19,15 @@ public class RestaurantService {
 
     @Autowired
     private BCryptPasswordEncoder getBCryptPasswordEncoder;
-
     @Autowired
     private CurrentUsername currentUsername;
-
     @Autowired
     private MyUserRepository myUserRepository;
 
     private ModelMapper modelMapper = new ModelMapper();
 
     private RestaurantRepository restaurantRepository;
-
+    @Autowired
     public RestaurantService(RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
     }

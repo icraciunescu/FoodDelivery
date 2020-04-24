@@ -20,17 +20,15 @@ public class ClientService {
 
     @Autowired
     private BCryptPasswordEncoder getBCryptPasswordEncoder;
-
     @Autowired
     private CurrentUsername currentUsername;
-
     @Autowired
     private MyUserRepository myUserRepository;
 
     private ModelMapper modelMapper = new ModelMapper();
 
     private ClientRepository clientRepository;
-
+    @Autowired
     public ClientService(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
     }

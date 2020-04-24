@@ -1,24 +1,29 @@
-package ro.mxp.food.dto;
+package ro.mxp.food.entity;
 
-import ro.mxp.food.entity.ProductInCart;
-
+import javax.persistence.*;
 import java.util.List;
 
-public class CartDto {
+@Entity
+public class ProductForDelivery {
 
-    private Long Id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @OneToMany(cascade = CascadeType.PERSIST)
     private List<ProductInCart> productInCartList;
+
     private Long valueCart;
 
-    public CartDto() {
+    public ProductForDelivery() {
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public List<ProductInCart> getProductInCartList() {

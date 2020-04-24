@@ -19,14 +19,12 @@ public class ProductInCartService {
 
     @Autowired
     private ClientRepository clientRepository;
-
     @Autowired
     private CurrentUsername currentUsername;
 
     private ModelMapper modelMapper = new ModelMapper();
 
     private ProductInCartRepository productInCartRepository;
-
     @Autowired
     public ProductInCartService(ProductInCartRepository productInCartRepository) {
         this.productInCartRepository = productInCartRepository;
@@ -51,7 +49,7 @@ public class ProductInCartService {
         return productInCartDtoList;
     }
 
-    public void addProductInCartDto(ProductInCartDto productInCartDto) {
+    public void addProductInCart(ProductInCartDto productInCartDto) {
         productInCartDto.setClient(clientRepository.findByUsername(currentUsername.displayCurrentUsername()));
         productInCartRepository.save(modelMapper.map(productInCartDto, ProductInCart.class));
     }

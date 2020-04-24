@@ -12,20 +12,29 @@ import java.util.List;
 public class CartController {
 
     private CartService cartService;
-
     @Autowired
     public CartController(CartService cartService) {
         this.cartService = cartService;
     }
 
-    @GetMapping("/pending")
-    public List<CartDto> getAllCartDto() {
-        return cartService.getAllCartDto();
+    @GetMapping("/sorting")
+    public List<CartDto> getAllCart() {
+        return cartService.getAllCart();
     }
 
-    @PostMapping("/send_command")
-    public void addCartDto(@RequestBody CartDto cartDto) {
+    @PostMapping
+    public void addCart(@RequestBody CartDto cartDto) {
         cartService.addCart(cartDto);
+    }
+
+    @PatchMapping("/pending/{id}")
+    public void pendingCart(@PathVariable Long id) {
+        cartService.pendingCart(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCart(@PathVariable Long id) {
+        cartService.deleteCart(id);
     }
 
 }

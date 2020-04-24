@@ -19,14 +19,13 @@ public class ProductService {
 
     @Autowired
     private CurrentUsername currentUsername;
-
     @Autowired
     private RestaurantRepository restaurantRepository;
 
     private ModelMapper modelMapper = new ModelMapper();
 
     private ProductRepository productRepository;
-
+    @Autowired
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }

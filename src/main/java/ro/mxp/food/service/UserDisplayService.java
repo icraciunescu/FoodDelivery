@@ -11,7 +11,6 @@ public class UserDisplayService {
 
     @Autowired
     private MyUserRepository myUserRepository;
-
     @Autowired
     private CurrentUsername currentUsername;
 

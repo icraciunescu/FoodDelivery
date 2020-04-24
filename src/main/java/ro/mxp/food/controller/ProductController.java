@@ -1,5 +1,6 @@
 package ro.mxp.food.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ro.mxp.food.dto.ProductDto;
 import ro.mxp.food.entity.Restaurant;
@@ -12,29 +13,29 @@ import java.util.List;
 public class ProductController {
 
     private ProductService productService;
-
+    @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping
-    public List<ProductDto> getAllProductDto() {
+    public List<ProductDto> getAllProduct() {
         return productService.getAllProduct();
     }
 
     @PostMapping
-    public void addProductDto(@RequestBody ProductDto productDto) {
+    public void addProduct(@RequestBody ProductDto productDto) {
         productService.addProduct(productDto);
     }
 
     @PutMapping("/{id}")
-    public void updateProductDto(@PathVariable Long id, @RequestParam String productName, @RequestParam String productType, @RequestParam Long productPrice,
-                                 @RequestParam String productIngredients) {
+    public void updateProduct(@PathVariable Long id, @RequestParam String productName, @RequestParam String productType, @RequestParam Long productPrice,
+                              @RequestParam String productIngredients) {
         productService.updateProduct(id, productName, productType, productPrice, productIngredients);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProductDto(@PathVariable Long id) {
+    public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
     }
 
