@@ -4,13 +4,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.mxp.food.dto.CartDto;
-import ro.mxp.food.dto.PendingDto;
+import ro.mxp.food.dto.PendingCartDto;
 import ro.mxp.food.entity.Cart;
-import ro.mxp.food.entity.Pending;
+import ro.mxp.food.entity.PendingCart;
 import ro.mxp.food.entity.ProductInCart;
 import ro.mxp.food.repository.CartRepository;
 import ro.mxp.food.repository.ClientRepository;
-import ro.mxp.food.repository.PendingRepository;
+import ro.mxp.food.repository.PendingCartRepository;
 import ro.mxp.food.repository.ProductInCartRepository;
 import ro.mxp.food.utils.CurrentUsername;
 
@@ -29,7 +29,7 @@ public class CartService {
     @Autowired
     private ClientRepository clientRepository;
     @Autowired
-    private PendingRepository pendingRepository;
+    private PendingCartRepository pendingCartRepository;
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -79,9 +79,10 @@ public class CartService {
     public void pendingCart(Long id) {
         Optional<Cart> optionalCart = cartRepository.findById(id);
         Cart cart =  optionalCart.get();
-        PendingDto pendingDto = modelMapper.map(cart, PendingDto.class);
-        Pending pending = modelMapper.map(pendingDto, Pending.class);
-        pendingRepository.save(pending);
+        PendingCartDto pendingCartDto = modelMapper.map(cart, PendingCartDto.class);
+        PendingCart pendingCart = modelMapper.map(pendingCartDto, PendingCart.class);
+        pendingCartRepository.save(pendingCart);
+
         cartRepository.deleteById(id);
     }
 

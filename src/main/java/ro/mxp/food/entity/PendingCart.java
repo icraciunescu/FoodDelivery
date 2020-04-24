@@ -4,18 +4,18 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Pending {
+public class PendingCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ProductInCart> productInCartList;
 
     private Long valueCart;
 
-    public Pending() {
+    public PendingCart() {
     }
 
     public Long getId() {

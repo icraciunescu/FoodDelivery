@@ -1,16 +1,21 @@
-package ro.mxp.food.dto;
+package ro.mxp.food.entity;
 
-import ro.mxp.food.entity.ProductInCart;
-
+import javax.persistence.*;
 import java.util.List;
 
-public class PendingDto {
+@Entity
+public class InProgress {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ProductInCart> productInCartList;
+
     private Long valueCart;
 
-    public PendingDto() {
+    public InProgress() {
     }
 
     public Long getId() {
