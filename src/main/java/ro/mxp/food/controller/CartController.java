@@ -27,7 +27,7 @@ public class CartController {
         cartService.addCart(cartDto);
     }
 
-    @PatchMapping("/pending/{id}")
+    @PatchMapping("/send_command/{id}")
     public void pendingCart(@PathVariable Long id) {
         cartService.pendingCart(id);
     }

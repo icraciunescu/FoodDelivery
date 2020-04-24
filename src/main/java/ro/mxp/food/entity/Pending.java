@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class ProductForDelivery {
+public class Pending {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,7 +15,7 @@ public class ProductForDelivery {
 
     private Long valueCart;
 
-    public ProductForDelivery() {
+    public Pending() {
     }
 
     public Long getId() {

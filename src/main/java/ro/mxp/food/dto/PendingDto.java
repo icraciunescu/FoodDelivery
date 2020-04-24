@@ -4,13 +4,13 @@ import ro.mxp.food.entity.ProductInCart;
 
 import java.util.List;
 
-public class ProductForDeliveryDto {
+public class PendingDto {
 
     private Long id;
     private List<ProductInCart> productInCartList;
     private Long valueCart;
 
-    public ProductForDeliveryDto() {
+    public PendingDto() {
     }
 
     public Long getId() {
