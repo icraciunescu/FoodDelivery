@@ -4,10 +4,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.mxp.food.dto.ProductInCartDto;
-import ro.mxp.food.entity.ProductInCart;
 import ro.mxp.food.entity.Client;
-import ro.mxp.food.repository.ProductInCartRepository;
+import ro.mxp.food.entity.ProductInCart;
 import ro.mxp.food.repository.ClientRepository;
+import ro.mxp.food.repository.ProductInCartRepository;
 import ro.mxp.food.utils.CurrentUsername;
 
 import java.util.LinkedList;
@@ -50,8 +50,25 @@ public class ProductInCartService {
     }
 
     public void addProductInCart(ProductInCartDto productInCartDto) {
-        productInCartDto.setClient(clientRepository.findByUsername(currentUsername.displayCurrentUsername()));
-        productInCartRepository.save(modelMapper.map(productInCartDto, ProductInCart.class));
+        List<ProductInCartDto> productInCartDtoList = productInCartRepository.findAll()
+                .stream()
+                .map(productInCart -> modelMapper.map(productInCart, ProductInCartDto.class))
+                .collect(Collectors.toList());
+        List<ProductInCartDto> productInCartByClient = new LinkedList<>();
+        for (ProductInCartDto productInCartDto1 : productInCartDtoList) {
+            if (productInCartDto1.getClient().equals(clientRepository.findByUsername(currentUsername.displayCurrentUsername()))) {
+                productInCartByClient.add(productInCartDto1);
+            }
+        }
+        if (productInCartByClient.size() < 1) {
+            productInCartDto.setClient(clientRepository.findByUsername(currentUsername.displayCurrentUsername()));
+            productInCartRepository.save(modelMapper.map(productInCartDto, ProductInCart.class));
+        } else {
+            if (productInCartDto.getProduct().getRestaurant().equals(productInCartByClient.get(0).getProduct().getRestaurant())) {
+                productInCartDto.setClient(clientRepository.findByUsername(currentUsername.displayCurrentUsername()));
+                productInCartRepository.save((modelMapper.map(productInCartDto, ProductInCart.class)));
+            }
+        }
     }
 
     public void updateProductInCartService(Long id, int quantity) {

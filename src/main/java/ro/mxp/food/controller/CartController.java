@@ -28,8 +28,8 @@ public class CartController {
     }
 
     @PatchMapping("/send_command/{id}")
-    public void pendingCart(@PathVariable Long id) {
-        cartService.pendingCart(id);
+    public void sendingCart(@PathVariable Long id) {
+        cartService.sendingCart(id);
     }
 
     @DeleteMapping("/{id}")

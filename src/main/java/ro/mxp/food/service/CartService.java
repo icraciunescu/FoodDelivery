@@ -76,7 +76,7 @@ public class CartService {
         cartRepository.save(modelMapper.map(cartDto, Cart.class));
     }
 
-    public void pendingCart(Long id) {
+    public void sendingCart(Long id) {
         Optional<Cart> optionalCart = cartRepository.findById(id);
         Cart cart =  optionalCart.get();
         PendingCartDto pendingCartDto = modelMapper.map(cart, PendingCartDto.class);
