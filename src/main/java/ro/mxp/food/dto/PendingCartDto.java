@@ -1,13 +1,13 @@
 package ro.mxp.food.dto;
 
-import ro.mxp.food.entity.ProductInCart;
-
-import java.util.List;
+import ro.mxp.food.entity.Cart;
+import ro.mxp.food.entity.Client;
 
 public class PendingCartDto {
 
     private Long id;
-    private List<ProductInCart> productInCartList;
+    private Cart cart;
+    private Client client;
     private Long valueCart;
 
     public PendingCartDto() {
@@ -21,12 +21,20 @@ public class PendingCartDto {
         this.id = id;
     }
 
-    public List<ProductInCart> getProductInCartList() {
-        return productInCartList;
+    public Cart getCart() {
+        return cart;
     }
 
-    public void setProductInCartList(List<ProductInCart> productInCartList) {
-        this.productInCartList = productInCartList;
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public Long getValueCart() {

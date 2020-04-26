@@ -1,7 +1,6 @@
 package ro.mxp.food.entity;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class PendingCart {
@@ -10,8 +9,11 @@ public class PendingCart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<ProductInCart> productInCartList;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Cart cart;
+
+    @OneToOne
+    private Client client;
 
     private Long valueCart;
 
@@ -26,12 +28,20 @@ public class PendingCart {
         this.id = id;
     }
 
-    public List<ProductInCart> getProductInCartList() {
-        return productInCartList;
+    public Cart getCart() {
+        return cart;
     }
 
-    public void setProductInCartList(List<ProductInCart> productInCartList) {
-        this.productInCartList = productInCartList;
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public Long getValueCart() {

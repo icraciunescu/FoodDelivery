@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ro.mxp.food.dto.CartDto;
 import ro.mxp.food.dto.PendingCartDto;
 import ro.mxp.food.entity.Cart;
+import ro.mxp.food.entity.Client;
 import ro.mxp.food.entity.PendingCart;
 import ro.mxp.food.entity.ProductInCart;
 import ro.mxp.food.repository.CartRepository;
@@ -79,7 +80,14 @@ public class CartService {
     public void sendingCart(Long id) {
         Optional<Cart> optionalCart = cartRepository.findById(id);
         Cart cart =  optionalCart.get();
-        PendingCartDto pendingCartDto = modelMapper.map(cart, PendingCartDto.class);
+
+        Client client = cart.getProductInCartList().get(0).getClient();
+
+        PendingCartDto pendingCartDto = new PendingCartDto();
+        pendingCartDto.setCart(cart);
+        pendingCartDto.setClient(client);
+        pendingCartDto.setValueCart(cart.getValueCart());
+
         PendingCart pendingCart = modelMapper.map(pendingCartDto, PendingCart.class);
         pendingCartRepository.save(pendingCart);
 
