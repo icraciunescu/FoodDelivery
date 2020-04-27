@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.mxp.food.dto.ProductDto;
 import ro.mxp.food.entity.Product;
-import ro.mxp.food.entity.Restaurant;
 import ro.mxp.food.repository.ProductRepository;
 import ro.mxp.food.repository.RestaurantRepository;
 import ro.mxp.food.utils.CurrentUsername;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +36,7 @@ public class ProductService {
                 .map(product -> modelMapper.map(product, ProductDto.class))
                 .collect(Collectors.toList());
 
-        if (restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()) instanceof Restaurant) {
+        if (restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()) != null) {
             List<ProductDto> productsByRestaurant = new LinkedList<>();
             for (ProductDto productDto : productDtoList) {
                 if (productDto.getRestaurant().equals(restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()))) {
@@ -55,11 +55,19 @@ public class ProductService {
     }
 
     public void updateProduct(Long id, String productName, String productType, Long productPrice, String productIngredients) {
-        productRepository.updateProductRepo(id, productName, productType, productPrice, productIngredients);
+        Optional<Product> product = productRepository.findById(id);
+        Product thisProduct = product.get();
+        if (restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()).equals(thisProduct.getRestaurant())) {
+            productRepository.updateProductRepo(id, productName, productType, productPrice, productIngredients);
+        }
     }
 
     public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+        Optional<Product> product = productRepository.findById(id);
+        Product thisProduct = product.get();
+        if (restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()).equals(thisProduct.getRestaurant())) {
+            productRepository.deleteById(id);
+        }
     }
 
 }

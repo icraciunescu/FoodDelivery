@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.mxp.food.dto.RestaurantDto;
-import ro.mxp.food.entity.MyUser;
 import ro.mxp.food.entity.Restaurant;
 import ro.mxp.food.repository.MyUserRepository;
 import ro.mxp.food.repository.RestaurantRepository;
@@ -54,7 +53,7 @@ public class RestaurantService {
 
     public void deleteRestaurant(Long id) {
         Restaurant restaurant = restaurantRepository.findByUsername(currentUsername.displayCurrentUsername());
-        if ((restaurant != null && restaurant.getId().equals(id)) || myUserRepository.findByUsername(currentUsername.displayCurrentUsername()) instanceof MyUser){
+        if ((restaurant != null && restaurant.getId().equals(id)) || myUserRepository.findByUsername(currentUsername.displayCurrentUsername()) != null) {
             restaurantRepository.deleteById(id);
         }
     }

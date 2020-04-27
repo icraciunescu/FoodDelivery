@@ -40,9 +40,10 @@ public class CartService {
         this.cartRepository = cartRepository;
     }
 
-    public List<CartDto> getAllCart() {
+    public List<CartDto> getAllCart() throws NullPointerException {
         List<Cart> cartList = new LinkedList<>();
-            List<Cart> cartByClient = new LinkedList<>();
+        List<Cart> cartByClient = new LinkedList<>();
+        try {
             for (Cart cart : cartRepository.findAll()) {
                 if (cart.getProductInCartList().size() > 0) {
                     if (clientRepository.findByUsername(currentUsername.displayCurrentUsername()).equals(cart.getProductInCartList().get(0).getClient())) {
@@ -51,6 +52,9 @@ public class CartService {
                 }
             }
             cartList.addAll(cartByClient);
+        } catch (NullPointerException e) {
+            e.getClass().getName();
+        }
         return cartList
                 .stream()
                 .map(cart -> modelMapper.map(cart, CartDto.class))
@@ -64,6 +68,7 @@ public class CartService {
                 productInCartByClient.add(productInCart);
             }
         }
+
         List<ProductInCart> productInCartByClientAndRestaurant = new LinkedList<>();
         long price = 0;
         for (ProductInCart productInCart : productInCartByClient) {
@@ -72,6 +77,7 @@ public class CartService {
                 price = price + productInCart.getProduct().getProductPrice() * productInCart.getQuantityProduct();
             }
         }
+
         cartDto.setProductInCartList(productInCartByClientAndRestaurant);
         cartDto.setValueCart(price);
         cartRepository.save(modelMapper.map(cartDto, Cart.class));
@@ -79,7 +85,7 @@ public class CartService {
 
     public void sendingCart(Long id) {
         Optional<Cart> optionalCart = cartRepository.findById(id);
-        Cart cart =  optionalCart.get();
+        Cart cart = optionalCart.get();
 
         Client client = cart.getProductInCartList().get(0).getClient();
 
@@ -89,13 +95,18 @@ public class CartService {
         pendingCartDto.setValueCart(cart.getValueCart());
 
         PendingCart pendingCart = modelMapper.map(pendingCartDto, PendingCart.class);
-        pendingCartRepository.save(pendingCart);
 
-        cartRepository.deleteById(id);
+        if (pendingCart.getClient().getUsername().equals(currentUsername.displayCurrentUsername())) {
+            pendingCartRepository.save(pendingCart);
+            cartRepository.deleteById(id);
+        }
     }
 
     public void deleteCart(Long id) {
-        cartRepository.deleteById(id);
+        Optional<Cart> cart = cartRepository.findById(id);
+        Cart thisCart = cart.get();
+        if (thisCart.getProductInCartList().get(0).getClient().equals(clientRepository.findByUsername(currentUsername.displayCurrentUsername())))
+        cartRepository.deleteById(thisCart.getId());
     }
 
 }

@@ -22,7 +22,7 @@ public class InProgressController {
         return inProgressService.getAllInProgress();
     }
 
-    @DeleteMapping("/delivered/{id}")
+    @PatchMapping("/delivered/{id}")
     public void deleteInProgress(@PathVariable Long id) {
         inProgressService.deleteInProgress(id);
     }

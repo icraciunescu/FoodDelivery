@@ -3,7 +3,6 @@ package ro.mxp.food.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ro.mxp.food.dto.ProductDto;
-import ro.mxp.food.entity.Restaurant;
 import ro.mxp.food.service.ProductService;
 
 import java.util.List;
