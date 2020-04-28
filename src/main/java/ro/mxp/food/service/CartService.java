@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.mxp.food.dto.CartDto;
 import ro.mxp.food.dto.PendingCartDto;
-import ro.mxp.food.entity.Cart;
-import ro.mxp.food.entity.Client;
-import ro.mxp.food.entity.PendingCart;
-import ro.mxp.food.entity.ProductInCart;
+import ro.mxp.food.entity.*;
 import ro.mxp.food.repository.CartRepository;
 import ro.mxp.food.repository.ClientRepository;
 import ro.mxp.food.repository.PendingCartRepository;
@@ -24,13 +21,13 @@ import java.util.stream.Collectors;
 public class CartService {
 
     @Autowired
-    private ProductInCartRepository productInCartRepository;
-    @Autowired
     private CurrentUsername currentUsername;
     @Autowired
     private ClientRepository clientRepository;
     @Autowired
     private PendingCartRepository pendingCartRepository;
+    @Autowired
+    private ProductInCartRepository productInCartRepository;
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -45,10 +42,8 @@ public class CartService {
         List<Cart> cartByClient = new LinkedList<>();
         try {
             for (Cart cart : cartRepository.findAll()) {
-                if (cart.getProductInCartList().size() > 0) {
-                    if (clientRepository.findByUsername(currentUsername.displayCurrentUsername()).equals(cart.getProductInCartList().get(0).getClient())) {
-                        cartByClient.add(cart);
-                    }
+                if (clientRepository.findByUsername(currentUsername.displayCurrentUsername()).equals(cart.getProductInCartList().get(0).getClient())) {
+                    cartByClient.add(cart);
                 }
             }
             cartList.addAll(cartByClient);
@@ -63,22 +58,15 @@ public class CartService {
 
     public void addCart(CartDto cartDto) {
         List<ProductInCart> productInCartByClient = new LinkedList<>();
+        long price = 0;
         for (ProductInCart productInCart : productInCartRepository.findAll()) {
             if (productInCart.getClient().getUsername().equals(currentUsername.displayCurrentUsername())) {
+                price = price + productInCart.getProduct().getProductPrice() * productInCart.getQuantityProduct();
                 productInCartByClient.add(productInCart);
             }
         }
 
-        List<ProductInCart> productInCartByClientAndRestaurant = new LinkedList<>();
-        long price = 0;
-        for (ProductInCart productInCart : productInCartByClient) {
-            if (productInCart.getProduct().getRestaurant().equals(productInCartByClient.get(0).getProduct().getRestaurant())) {
-                productInCartByClientAndRestaurant.add(productInCart);
-                price = price + productInCart.getProduct().getProductPrice() * productInCart.getQuantityProduct();
-            }
-        }
-
-        cartDto.setProductInCartList(productInCartByClientAndRestaurant);
+        cartDto.setProductInCartList(productInCartByClient);
         cartDto.setValueCart(price);
         cartRepository.save(modelMapper.map(cartDto, Cart.class));
     }
@@ -90,13 +78,13 @@ public class CartService {
         Client client = cart.getProductInCartList().get(0).getClient();
 
         PendingCartDto pendingCartDto = new PendingCartDto();
+        pendingCartDto.setValueCart(cart.getValueCart());
         pendingCartDto.setCart(cart);
         pendingCartDto.setClient(client);
-        pendingCartDto.setValueCart(cart.getValueCart());
 
         PendingCart pendingCart = modelMapper.map(pendingCartDto, PendingCart.class);
 
-        if (pendingCart.getClient().getUsername().equals(currentUsername.displayCurrentUsername())) {
+        if (pendingCart.getClient().equals(clientRepository.findByUsername(currentUsername.displayCurrentUsername()))) {
             pendingCartRepository.save(pendingCart);
             cartRepository.deleteById(id);
         }
@@ -105,8 +93,10 @@ public class CartService {
     public void deleteCart(Long id) {
         Optional<Cart> cart = cartRepository.findById(id);
         Cart thisCart = cart.get();
-        if (thisCart.getProductInCartList().get(0).getClient().equals(clientRepository.findByUsername(currentUsername.displayCurrentUsername())))
-        cartRepository.deleteById(thisCart.getId());
+        if (thisCart.getProductInCartList().get(0).getClient().equals(clientRepository.findByUsername(currentUsername.displayCurrentUsername()))) {
+            cartRepository.deleteById(id);
+        }
+
     }
 
 }

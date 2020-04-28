@@ -11,7 +11,7 @@ public class Restaurant extends MyUser {
     private String restaurantAddress;
     private String restaurantPhone;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Product> productList;
 
     public Restaurant() {
@@ -47,6 +47,14 @@ public class Restaurant extends MyUser {
 
     public void setRestaurantPhone(String restaurantPhone) {
         this.restaurantPhone = restaurantPhone;
+    }
+
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
     }
 
 }

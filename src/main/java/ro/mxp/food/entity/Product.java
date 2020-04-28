@@ -14,12 +14,6 @@ public class Product {
     private Long productPrice;
     private String productIngredients;
 
-    @ManyToOne
-    private Restaurant restaurant;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    private ProductInCart productInCart;
-
     public Product() {
     }
 
@@ -61,14 +55,6 @@ public class Product {
 
     public void setProductIngredients(String productIngredients) {
         this.productIngredients = productIngredients;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
     }
 
 }
