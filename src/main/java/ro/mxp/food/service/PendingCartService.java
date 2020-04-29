@@ -5,14 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.mxp.food.dto.InProgressDto;
 import ro.mxp.food.dto.PendingCartDto;
-import ro.mxp.food.entity.Client;
-import ro.mxp.food.entity.InProgress;
-import ro.mxp.food.entity.PendingCart;
+import ro.mxp.food.entity.*;
 import ro.mxp.food.repository.ClientRepository;
 import ro.mxp.food.repository.InProgressRepository;
 import ro.mxp.food.repository.PendingCartRepository;
 import ro.mxp.food.repository.RestaurantRepository;
 import ro.mxp.food.utils.CurrentUsername;
+import ro.mxp.food.utils.ProductBelongRestaurant;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +29,8 @@ public class PendingCartService {
     private RestaurantRepository restaurantRepository;
     @Autowired
     private CurrentUsername currentUsername;
+    @Autowired
+    private ProductBelongRestaurant productBelongRestaurant;
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -47,18 +48,23 @@ public class PendingCartService {
                 .collect(Collectors.toList());
         List<PendingCartDto> pendingCartDtoListReturn = new LinkedList<>();
 
-        if (clientRepository.findByUsername(currentUsername.displayCurrentUsername()) != null) {
+        Client client = clientRepository.findByUsername(currentUsername.displayCurrentUsername());
+        if (client != null) {
             for (PendingCartDto pendingCartDto : pendingCartDtoList) {
-                if (pendingCartDto.getClient().equals(clientRepository.findByUsername(currentUsername.displayCurrentUsername()))) {
+                if (pendingCartDto.getClient().equals(client)) {
                     pendingCartDtoListReturn.add(pendingCartDto);
                 }
             }
         }
 
-        if (restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()) != null) {
+        Restaurant restaurant = restaurantRepository.findByUsername(currentUsername.displayCurrentUsername());
+        if (restaurant != null) {
             for (PendingCartDto pendingCartDto : pendingCartDtoList) {
+                Product product = pendingCartDto.getCart().getProductInCartList().get(0).getProduct();
+                if (productBelongRestaurant.productInRestaurant(restaurant, product)) {
                     pendingCartDtoListReturn.add(pendingCartDto);
                 }
+            }
         }
 
         return pendingCartDtoListReturn;
@@ -68,19 +74,26 @@ public class PendingCartService {
         Optional<PendingCart> optionalPendingCart = pendingCartRepository.findById(id);
         PendingCart pendingCart = optionalPendingCart.get();
 
-        InProgressDto inProgressDto = modelMapper.map(pendingCart, InProgressDto.class);
-        InProgress inProgress = modelMapper.map(inProgressDto, InProgress.class);
-        inProgressRepository.save(inProgress);
-        pendingCartRepository.deleteById(id);
+        Restaurant restaurant = pendingCart.getCart().getProductInCartList().get(0).getProduct().getRestaurant();
+        Product product = pendingCart.getCart().getProductInCartList().get(0).getProduct();
+
+        if (productBelongRestaurant.productInRestaurant(restaurant, product)) {
+            InProgressDto inProgressDto = modelMapper.map(pendingCart, InProgressDto.class);
+            InProgress inProgress = modelMapper.map(inProgressDto, InProgress.class);
+            inProgressRepository.save(inProgress);
+            pendingCartRepository.deleteById(id);
+        }
     }
 
     public void deletePendingCart(Long id) {
         Optional<PendingCart> optionalPendingCart = pendingCartRepository.findById(id);
         PendingCart pendingCart = optionalPendingCart.get();
 
+        Restaurant restaurant = pendingCart.getCart().getProductInCartList().get(0).getProduct().getRestaurant();
         Client client = pendingCart.getClient();
 
-        if ((clientRepository.findByUsername((currentUsername.displayCurrentUsername())) != null && clientRepository.findByUsername((currentUsername.displayCurrentUsername())).equals(client))) {
+        if ((restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()) != null && restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()).equals(restaurant))
+                || (clientRepository.findByUsername((currentUsername.displayCurrentUsername())) != null && clientRepository.findByUsername((currentUsername.displayCurrentUsername())).equals(client))) {
             pendingCartRepository.deleteById(id);
         }
     }
