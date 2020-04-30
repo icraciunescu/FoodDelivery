@@ -40,9 +40,10 @@ public class CartService {
     public List<CartDto> getAllCart() throws NullPointerException {
         List<Cart> cartList = new LinkedList<>();
         List<Cart> cartByClient = new LinkedList<>();
+        Client client = clientRepository.findByUsername(currentUsername.displayCurrentUsername());
         try {
             for (Cart cart : cartRepository.findAll()) {
-                if (clientRepository.findByUsername(currentUsername.displayCurrentUsername()).equals(cart.getProductInCartList().get(0).getClient())) {
+                if ((client).equals(cart.getProductInCartList().get(0).getClient())) {
                     cartByClient.add(cart);
                 }
             }
@@ -60,7 +61,7 @@ public class CartService {
         List<ProductInCart> productInCartByClient = new LinkedList<>();
         long price = 0;
         for (ProductInCart productInCart : productInCartRepository.findAll()) {
-            if (productInCart.getClient().getUsername().equals(currentUsername.displayCurrentUsername())) {
+            if (productInCart.getClient().equals(clientRepository.findByUsername(currentUsername.displayCurrentUsername()))) {
                 price = price + productInCart.getProduct().getProductPrice() * productInCart.getQuantityProduct();
                 productInCartByClient.add(productInCart);
             }
