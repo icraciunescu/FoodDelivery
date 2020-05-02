@@ -32,9 +32,9 @@ public class PendingCartService {
     @Autowired
     private ProductBelongRestaurant productBelongRestaurant;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
 
-    private PendingCartRepository pendingCartRepository;
+    private final PendingCartRepository pendingCartRepository;
 
     @Autowired
     public PendingCartService(PendingCartRepository pendingCartRepository) {
@@ -71,9 +71,7 @@ public class PendingCartService {
     }
 
     public void inProgress(Long id) {
-        Optional<PendingCart> optionalPendingCart = pendingCartRepository.findById(id);
-        PendingCart pendingCart = optionalPendingCart.get();
-
+        PendingCart pendingCart = findPendingCart(id);
         Restaurant restaurant = pendingCart.getCart().getProductInCartList().get(0).getProduct().getRestaurant();
         Product product = pendingCart.getCart().getProductInCartList().get(0).getProduct();
 
@@ -86,9 +84,7 @@ public class PendingCartService {
     }
 
     public void deletePendingCart(Long id) {
-        Optional<PendingCart> optionalPendingCart = pendingCartRepository.findById(id);
-        PendingCart pendingCart = optionalPendingCart.get();
-
+        PendingCart pendingCart = findPendingCart(id);
         Restaurant restaurant = pendingCart.getCart().getProductInCartList().get(0).getProduct().getRestaurant();
         Client client = pendingCart.getClient();
 
@@ -96,6 +92,15 @@ public class PendingCartService {
                 || (clientRepository.findByUsername((currentUsername.displayCurrentUsername())) != null && clientRepository.findByUsername((currentUsername.displayCurrentUsername())).equals(client))) {
             pendingCartRepository.deleteById(id);
         }
+    }
+
+    protected PendingCart findPendingCart(Long id) {
+        Optional<PendingCart> optionalPendingCart = pendingCartRepository.findById(id);
+        PendingCart pendingCart = null;
+        if (optionalPendingCart.isPresent()) {
+            pendingCart = optionalPendingCart.get();
+        }
+        return pendingCart;
     }
 
 }

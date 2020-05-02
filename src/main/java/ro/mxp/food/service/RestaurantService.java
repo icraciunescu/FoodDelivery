@@ -1,5 +1,6 @@
 package ro.mxp.food.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,6 +11,7 @@ import ro.mxp.food.repository.MyUserRepository;
 import ro.mxp.food.repository.RestaurantRepository;
 import ro.mxp.food.utils.CurrentUsername;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,22 +25,35 @@ public class RestaurantService {
     @Autowired
     private MyUserRepository myUserRepository;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
 
-    private RestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
     @Autowired
     public RestaurantService(RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
     }
 
     public List<RestaurantDto> getAllRestaurant() {
-        return restaurantRepository.findAll()
-                .stream()
-                .map(restaurant -> modelMapper.map(restaurant, RestaurantDto.class))
-                .collect(Collectors.toList());
+        List<RestaurantDto> restaurantDtoList = new LinkedList<>();
+        if (restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()) == null) {
+            List<RestaurantDto> allRestaurantDtoList = restaurantRepository.findAll()
+                    .stream()
+                    .map(restaurant -> modelMapper.map(restaurant, RestaurantDto.class))
+                    .collect(Collectors.toList());
+            restaurantDtoList.addAll(allRestaurantDtoList);
+        }
+
+        if (restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()) != null) {
+            List<RestaurantDto> loginRestaurant = new LinkedList<>();
+            Restaurant restaurant = restaurantRepository.findByUsername(currentUsername.displayCurrentUsername());
+            loginRestaurant.add(modelMapper.map(restaurant, RestaurantDto.class));
+            restaurantDtoList.addAll(loginRestaurant);
+        }
+
+        return restaurantDtoList;
     }
 
-    public void addRestaurant(RestaurantDto restaurantDto) {
+    public void addRestaurant(@NotNull RestaurantDto restaurantDto) {
         restaurantDto.setRole("RESTAURANT");
         restaurantDto.setPassword(getBCryptPasswordEncoder.encode(restaurantDto.getPassword()));
         restaurantRepository.save(modelMapper.map(restaurantDto, Restaurant.class));

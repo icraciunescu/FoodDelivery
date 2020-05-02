@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("/pending")
 public class PendingCartController {
 
-    private PendingCartService pendingCartService;
+    private final PendingCartService pendingCartService;
     @Autowired
     public PendingCartController(PendingCartService pendingCartService) {
         this.pendingCartService = pendingCartService;
@@ -31,6 +31,5 @@ public class PendingCartController {
     public void deletePendingCart(@PathVariable Long id) {
         pendingCartService.deletePendingCart(id);
     }
-
 
 }

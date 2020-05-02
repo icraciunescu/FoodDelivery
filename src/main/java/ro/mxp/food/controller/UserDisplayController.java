@@ -9,7 +9,7 @@ import ro.mxp.food.service.UserDisplayService;
 @RestController
 public class UserDisplayController {
 
-    private UserDisplayService userDisplayService;
+    private final UserDisplayService userDisplayService;
     @Autowired
     public UserDisplayController(UserDisplayService userDisplayService) {
         this.userDisplayService = userDisplayService;

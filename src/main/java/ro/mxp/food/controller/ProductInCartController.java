@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("/product_in_cart")
 public class ProductInCartController {
 
-    private ProductInCartService productInCartService;
+    private final ProductInCartService productInCartService;
     @Autowired
     public ProductInCartController(ProductInCartService productInCartService) {
         this.productInCartService = productInCartService;

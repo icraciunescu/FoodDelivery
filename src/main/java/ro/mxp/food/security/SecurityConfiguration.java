@@ -1,5 +1,6 @@
 package ro.mxp.food.security;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,21 +15,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private UserDetailsServiceLogin userDetailsServiceLogin;
+    private final UserDetailsServiceLogin userDetailsServiceLogin;
     @Autowired
     public SecurityConfiguration(UserDetailsServiceLogin userDetailsServiceLogin) {
         this.userDetailsServiceLogin = userDetailsServiceLogin;
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(@NotNull AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .userDetailsService(userDetailsServiceLogin)
                 .passwordEncoder(getBCryptPasswordEncoder());
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(@NotNull HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                 .antMatchers("/myUser").hasRole("ADMIN")
@@ -37,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/product").hasRole("RESTAURANT")
                 .antMatchers(HttpMethod.PUT, "/product/**").hasRole("RESTAURANT")
                 .antMatchers(HttpMethod.DELETE, "/product/**").hasAnyRole("ADMIN", "RESTAURANT")
-                .antMatchers(HttpMethod.GET, "/client").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/client").hasAnyRole("ADMIN", "CLIENT")
                 .antMatchers(HttpMethod.PUT, "/client").hasRole("CLIENT")
                 .antMatchers(HttpMethod.DELETE, "/client/**").hasAnyRole("ADMIN", "CLIENT")
                 .antMatchers(HttpMethod.GET, "/product_in_cart").hasAnyRole("ADMIN", "CLIENT")

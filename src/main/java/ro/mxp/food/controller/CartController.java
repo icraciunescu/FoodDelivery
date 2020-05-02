@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("/cart")
 public class CartController {
 
-    private CartService cartService;
+    private final CartService cartService;
     @Autowired
     public CartController(CartService cartService) {
         this.cartService = cartService;

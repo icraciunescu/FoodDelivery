@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("/restaurant")
 public class RestaurantController {
 
-    private RestaurantService restaurantService;
+    private final RestaurantService restaurantService;
     @Autowired
     public RestaurantController(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
@@ -37,6 +37,5 @@ public class RestaurantController {
     public void deleteRestaurant(@PathVariable Long id) {
         restaurantService.deleteRestaurant(id);
     }
-
 
 }

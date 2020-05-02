@@ -20,9 +20,9 @@ public class MyUserService {
     @Autowired
     private CurrentUsername currentUsername;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
 
-    private MyUserRepository myUserRepository;
+    private final MyUserRepository myUserRepository;
     @Autowired
     public MyUserService(MyUserRepository myUserRepository) {
         this.myUserRepository = myUserRepository;

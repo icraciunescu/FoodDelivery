@@ -1,5 +1,6 @@
 package ro.mxp.food.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +27,9 @@ public class ProductService {
     @Autowired
     private ProductBelongRestaurant productBelongRestaurant;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
     @Autowired
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
@@ -55,27 +56,34 @@ public class ProductService {
         return productDtoList;
     }
 
-    public void addProduct(ProductDto productDto) {
+    public void addProduct(@NotNull ProductDto productDto) {
         productDto.setRestaurant(restaurantRepository.findByUsername(currentUsername.displayCurrentUsername()));
         productRepository.save(modelMapper.map(productDto, Product.class));
     }
 
     public void updateProduct(Long id, String productName, String productType, Long productPrice, String productIngredients) {
-        Optional<Product> product = productRepository.findById(id);
-        Product thisProduct = product.get();
+        Product product = findProduct(id);
         Restaurant restaurant = restaurantRepository.findByUsername(currentUsername.displayCurrentUsername());
-        if (productBelongRestaurant.productInRestaurant(restaurant, thisProduct)) {
+        if (productBelongRestaurant.productInRestaurant(restaurant, product)) {
             productRepository.updateProductRepo(id, productName, productType, productPrice, productIngredients);
         }
     }
 
     public void deleteProduct(Long id) {
-        Optional<Product> product = productRepository.findById(id);
-        Product thisProduct = product.get();
+        Product product = findProduct(id);
         Restaurant restaurant = restaurantRepository.findByUsername(currentUsername.displayCurrentUsername());
-        if (productBelongRestaurant.productInRestaurant(restaurant, thisProduct)) {
+        if (productBelongRestaurant.productInRestaurant(restaurant, product)) {
             productRepository.deleteById(id);
         }
+    }
+
+    protected Product findProduct(Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        Product thisProduct = null;
+        if (product.isPresent()) {
+            thisProduct = product.get();
+        }
+        return thisProduct;
     }
 
 }

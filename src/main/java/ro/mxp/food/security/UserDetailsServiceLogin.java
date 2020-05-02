@@ -11,7 +11,7 @@ import ro.mxp.food.repository.MyUserRepository;
 @Service
 public class UserDetailsServiceLogin implements UserDetailsService {
 
-    private MyUserRepository myUserRepository;
+    private final MyUserRepository myUserRepository;
     @Autowired
     public UserDetailsServiceLogin(MyUserRepository myUserRepository) {
         this.myUserRepository = myUserRepository;
@@ -20,8 +20,7 @@ public class UserDetailsServiceLogin implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         MyUser myUser = myUserRepository.findByUsername(username);
-        UserDetailsLogin userDetailsLogin = new UserDetailsLogin(myUser);
-        return userDetailsLogin;
+        return new UserDetailsLogin(myUser);
     }
 
 }

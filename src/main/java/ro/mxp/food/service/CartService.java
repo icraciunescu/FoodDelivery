@@ -29,9 +29,9 @@ public class CartService {
     @Autowired
     private ProductInCartRepository productInCartRepository;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
 
-    private CartRepository cartRepository;
+    private final CartRepository cartRepository;
     @Autowired
     public CartService(CartRepository cartRepository) {
         this.cartRepository = cartRepository;
@@ -49,7 +49,7 @@ public class CartService {
             }
             cartList.addAll(cartByClient);
         } catch (NullPointerException e) {
-            e.getClass().getName();
+            e.printStackTrace();
         }
         return cartList
                 .stream()
@@ -74,8 +74,12 @@ public class CartService {
 
     public void sendingCart(Long id) {
         Optional<Cart> optionalCart = cartRepository.findById(id);
-        Cart cart = optionalCart.get();
+        Cart cart = null;
+        if (optionalCart.isPresent()) {
+            cart = optionalCart.get();
+        }
 
+        assert cart != null;
         Client client = cart.getProductInCartList().get(0).getClient();
 
         PendingCartDto pendingCartDto = new PendingCartDto();
@@ -93,11 +97,15 @@ public class CartService {
 
     public void deleteCart(Long id) {
         Optional<Cart> cart = cartRepository.findById(id);
-        Cart thisCart = cart.get();
+        Cart thisCart = null;
+        if (cart.isPresent()) {
+            thisCart = cart.get();
+        }
+
+        assert thisCart != null;
         if (thisCart.getProductInCartList().get(0).getClient().equals(clientRepository.findByUsername(currentUsername.displayCurrentUsername()))) {
             cartRepository.deleteById(id);
         }
-
     }
 
 }

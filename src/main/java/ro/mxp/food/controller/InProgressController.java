@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("/in_progress")
 public class InProgressController {
 
-    private InProgressService inProgressService;
+    private final InProgressService inProgressService;
     @Autowired
     public InProgressController(InProgressService inProgressService) {
         this.inProgressService = inProgressService;

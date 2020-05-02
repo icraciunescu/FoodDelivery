@@ -27,9 +27,9 @@ public class InProgressService {
     @Autowired
     private ProductBelongRestaurant productBelongRestaurant;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
 
-    private InProgressRepository inProgressRepository;
+    private final InProgressRepository inProgressRepository;
     @Autowired
     public InProgressService(InProgressRepository inProgressRepository) {
         this.inProgressRepository = inProgressRepository;
@@ -55,9 +55,13 @@ public class InProgressService {
 
     public void deleteInProgress(Long id) {
         Optional<InProgress> inProgressDto = inProgressRepository.findById(id);
-        InProgress inProgress = inProgressDto.get();
+        InProgress inProgress = null;
+        if (inProgressDto.isPresent()) {
+            inProgress = inProgressDto.get();
+        }
 
         Restaurant restaurant = restaurantRepository.findByUsername(currentUsername.displayCurrentUsername());
+        assert inProgress != null;
         Product product = inProgress.getCart().getProductInCartList().get(0).getProduct();
 
         if (productBelongRestaurant.productInRestaurant(restaurant, product)) {

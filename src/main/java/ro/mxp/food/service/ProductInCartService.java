@@ -1,5 +1,6 @@
 package ro.mxp.food.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +23,9 @@ public class ProductInCartService {
     @Autowired
     private CurrentUsername currentUsername;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
 
-    private ProductInCartRepository productInCartRepository;
+    private final ProductInCartRepository productInCartRepository;
     @Autowired
     public ProductInCartService(ProductInCartRepository productInCartRepository) {
         this.productInCartRepository = productInCartRepository;
@@ -49,30 +50,34 @@ public class ProductInCartService {
         return productInCartDtoList;
     }
 
-    public void addProductInCart(ProductInCartDto productInCartDto) {
+    public void addProductInCart(@NotNull ProductInCartDto productInCartDto) {
         productInCartDto.setClient(clientRepository.findByUsername(currentUsername.displayCurrentUsername()));
         productInCartRepository.save((modelMapper.map(productInCartDto, ProductInCart.class)));
     }
 
     public void updateProductInCartService(Long id, int quantity) {
-        Optional<ProductInCart> productInCart = productInCartRepository.findById(id);
-        ProductInCart thisProductInCart = productInCart.get();
-
+        ProductInCart productInCart = findProductInCart(id);
         if ((clientRepository.findByUsername(currentUsername.displayCurrentUsername()) != null)
-                && clientRepository.findByUsername(currentUsername.displayCurrentUsername()).equals(thisProductInCart.getClient())) {
+                && clientRepository.findByUsername(currentUsername.displayCurrentUsername()).equals(productInCart.getClient())) {
             productInCartRepository.updateProductInCartRepo(id, quantity);
         }
-
     }
 
     public void deleteProductInCart(Long id) {
-        Optional<ProductInCart> productInCart = productInCartRepository.findById(id);
-        ProductInCart thisProductInCart = productInCart.get();
-
+        ProductInCart productInCart = findProductInCart(id);
         if ((clientRepository.findByUsername(currentUsername.displayCurrentUsername()) != null)
-                && clientRepository.findByUsername(currentUsername.displayCurrentUsername()).equals(thisProductInCart.getClient())) {
+                && clientRepository.findByUsername(currentUsername.displayCurrentUsername()).equals(productInCart.getClient())) {
             productInCartRepository.deleteById(id);
         }
+    }
+
+    protected ProductInCart findProductInCart(Long id) {
+        Optional<ProductInCart> productInCart = productInCartRepository.findById(id);
+        ProductInCart thisProductInCart = null;
+        if (productInCart.isPresent()) {
+            thisProductInCart = productInCart.get();
+        }
+        return thisProductInCart;
     }
 
 }
