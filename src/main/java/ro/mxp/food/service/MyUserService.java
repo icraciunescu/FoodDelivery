@@ -15,16 +15,15 @@ import java.util.stream.Collectors;
 @Service
 public class MyUserService {
 
-    @Autowired
-    private BCryptPasswordEncoder getBCryptPasswordEncoder;
-    @Autowired
-    private CurrentUsername currentUsername;
-
+    private final BCryptPasswordEncoder getBCryptPasswordEncoder;
+    private final CurrentUsername currentUsername;
     private final ModelMapper modelMapper = new ModelMapper();
-
     private final MyUserRepository myUserRepository;
+
     @Autowired
-    public MyUserService(MyUserRepository myUserRepository) {
+    public MyUserService(BCryptPasswordEncoder getBCryptPasswordEncoder, CurrentUsername currentUsername, MyUserRepository myUserRepository) {
+        this.getBCryptPasswordEncoder = getBCryptPasswordEncoder;
+        this.currentUsername = currentUsername;
         this.myUserRepository = myUserRepository;
     }
 
@@ -49,7 +48,7 @@ public class MyUserService {
     public void updateMyUser(Long id, String email, String username) {
         MyUser myUser = myUserRepository.findByUsername(currentUsername.displayCurrentUsername());
         if (myUser != null && myUser.getId().equals(id)) {
-            myUserRepository.updateMyUserRepo(id, email, username);
+            myUserRepository.updateMyUser(id, email, username);
         }
     }
 

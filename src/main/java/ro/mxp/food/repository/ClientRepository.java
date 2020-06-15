@@ -21,7 +21,7 @@ public interface ClientRepository extends CrudRepository<Client, Long> {
     @Modifying
     @Query("update Client c set c.email=:email, c.username=:username, c.phoneNumber=:phoneNumber, c.firstName=:firstName," +
             "c.lastName=:lastName, c.dateOfBirth=:dateOfBirth where c.id=:id")
-    void updateClientRepo(@Param("id") Long id, @Param("email") String email, @Param("username") String username, @Param("phoneNumber") String phoneNumber,
-                          @Param("firstName") String firstName, @Param("lastName") String lastName, @Param("dateOfBirth") Date dateOfBirth);
+    void updateClient(@Param("id") Long id, @Param("email") String email, @Param("username") String username, @Param("phoneNumber") String phoneNumber,
+                      @Param("firstName") String firstName, @Param("lastName") String lastName, @Param("dateOfBirth") Date dateOfBirth);
 
 }

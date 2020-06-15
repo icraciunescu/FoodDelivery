@@ -21,23 +21,22 @@ import java.util.stream.Collectors;
 @Service
 public class PendingCartService {
 
-    @Autowired
-    private InProgressRepository inProgressRepository;
-    @Autowired
-    private ClientRepository clientRepository;
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-    @Autowired
-    private CurrentUsername currentUsername;
-    @Autowired
-    private ProductBelongRestaurant productBelongRestaurant;
-
+    private final InProgressRepository inProgressRepository;
+    private final ClientRepository clientRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final CurrentUsername currentUsername;
+    private final ProductBelongRestaurant productBelongRestaurant;
     private final ModelMapper modelMapper = new ModelMapper();
-
     private final PendingCartRepository pendingCartRepository;
 
     @Autowired
-    public PendingCartService(PendingCartRepository pendingCartRepository) {
+    public PendingCartService(InProgressRepository inProgressRepository, ClientRepository clientRepository, RestaurantRepository restaurantRepository,
+                              CurrentUsername currentUsername, ProductBelongRestaurant productBelongRestaurant, PendingCartRepository pendingCartRepository) {
+        this.inProgressRepository = inProgressRepository;
+        this.clientRepository = clientRepository;
+        this.restaurantRepository = restaurantRepository;
+        this.currentUsername = currentUsername;
+        this.productBelongRestaurant = productBelongRestaurant;
         this.pendingCartRepository = pendingCartRepository;
     }
 

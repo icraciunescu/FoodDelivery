@@ -20,18 +20,18 @@ import java.util.stream.Collectors;
 @Service
 public class InProgressService {
 
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-    @Autowired
-    private CurrentUsername currentUsername;
-    @Autowired
-    private ProductBelongRestaurant productBelongRestaurant;
-
+    private final RestaurantRepository restaurantRepository;
+    private final CurrentUsername currentUsername;
+    private final ProductBelongRestaurant productBelongRestaurant;
     private final ModelMapper modelMapper = new ModelMapper();
-
     private final InProgressRepository inProgressRepository;
+
     @Autowired
-    public InProgressService(InProgressRepository inProgressRepository) {
+    public InProgressService(RestaurantRepository restaurantRepository, CurrentUsername currentUsername, ProductBelongRestaurant productBelongRestaurant,
+                             InProgressRepository inProgressRepository) {
+        this.restaurantRepository = restaurantRepository;
+        this.currentUsername = currentUsername;
+        this.productBelongRestaurant = productBelongRestaurant;
         this.inProgressRepository = inProgressRepository;
     }
 

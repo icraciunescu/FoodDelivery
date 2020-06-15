@@ -20,20 +20,20 @@ import java.util.stream.Collectors;
 @Service
 public class CartService {
 
-    @Autowired
-    private CurrentUsername currentUsername;
-    @Autowired
-    private ClientRepository clientRepository;
-    @Autowired
-    private PendingCartRepository pendingCartRepository;
-    @Autowired
-    private ProductInCartRepository productInCartRepository;
-
+    private final CurrentUsername currentUsername;
+    private final ClientRepository clientRepository;
+    private final PendingCartRepository pendingCartRepository;
+    private final ProductInCartRepository productInCartRepository;
     private final ModelMapper modelMapper = new ModelMapper();
-
     private final CartRepository cartRepository;
+
     @Autowired
-    public CartService(CartRepository cartRepository) {
+    public CartService(CurrentUsername currentUsername, ClientRepository clientRepository, PendingCartRepository pendingCartRepository,
+                       ProductInCartRepository productInCartRepository, CartRepository cartRepository) {
+        this.currentUsername = currentUsername;
+        this.clientRepository = clientRepository;
+        this.pendingCartRepository = pendingCartRepository;
+        this.productInCartRepository = productInCartRepository;
         this.cartRepository = cartRepository;
     }
 

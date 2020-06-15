@@ -9,10 +9,14 @@ import ro.mxp.food.utils.CurrentUsername;
 @Service
 public class UserDisplayService {
 
+    private final MyUserRepository myUserRepository;
+    private final CurrentUsername currentUsername;
+
     @Autowired
-    private MyUserRepository myUserRepository;
-    @Autowired
-    private CurrentUsername currentUsername;
+    public UserDisplayService(MyUserRepository myUserRepository, CurrentUsername currentUsername) {
+        this.myUserRepository = myUserRepository;
+        this.currentUsername = currentUsername;
+    }
 
     public MyUser currentUserName() {
 

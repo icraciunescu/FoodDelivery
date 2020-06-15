@@ -19,18 +19,18 @@ import java.util.stream.Collectors;
 @Service
 public class ClientService {
 
-    @Autowired
-    private BCryptPasswordEncoder getBCryptPasswordEncoder;
-    @Autowired
-    private CurrentUsername currentUsername;
-    @Autowired
-    private MyUserRepository myUserRepository;
-
+    private final BCryptPasswordEncoder getBCryptPasswordEncoder;
+    private final CurrentUsername currentUsername;
+    private final MyUserRepository myUserRepository;
     private final ModelMapper modelMapper = new ModelMapper();
-
     private final ClientRepository clientRepository;
+
     @Autowired
-    public ClientService(ClientRepository clientRepository) {
+    public ClientService(BCryptPasswordEncoder getBCryptPasswordEncoder, CurrentUsername currentUsername, MyUserRepository myUserRepository,
+                         ClientRepository clientRepository) {
+        this.getBCryptPasswordEncoder = getBCryptPasswordEncoder;
+        this.currentUsername = currentUsername;
+        this.myUserRepository = myUserRepository;
         this.clientRepository = clientRepository;
     }
 
@@ -58,7 +58,7 @@ public class ClientService {
     public void updateClient(Long id, String email, String username, String phoneNumber, String firstName, String lastName, Date dateOfBirth) {
         Client client = clientRepository.findByUsername(currentUsername.displayCurrentUsername());
         if (client != null && client.getId().equals(id)) {
-            clientRepository.updateClientRepo(id, email, username, phoneNumber, firstName, lastName, dateOfBirth);
+            clientRepository.updateClient(id, email, username, phoneNumber, firstName, lastName, dateOfBirth);
         }
     }
 

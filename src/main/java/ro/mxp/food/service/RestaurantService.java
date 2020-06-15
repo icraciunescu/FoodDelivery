@@ -18,18 +18,18 @@ import java.util.stream.Collectors;
 @Service
 public class RestaurantService {
 
-    @Autowired
-    private BCryptPasswordEncoder getBCryptPasswordEncoder;
-    @Autowired
-    private CurrentUsername currentUsername;
-    @Autowired
-    private MyUserRepository myUserRepository;
-
+    private final BCryptPasswordEncoder getBCryptPasswordEncoder;
+    private final CurrentUsername currentUsername;
+    private final MyUserRepository myUserRepository;
     private final ModelMapper modelMapper = new ModelMapper();
-
     private final RestaurantRepository restaurantRepository;
+
     @Autowired
-    public RestaurantService(RestaurantRepository restaurantRepository) {
+    public RestaurantService(BCryptPasswordEncoder getBCryptPasswordEncoder, CurrentUsername currentUsername, MyUserRepository myUserRepository,
+                             RestaurantRepository restaurantRepository) {
+        this.getBCryptPasswordEncoder = getBCryptPasswordEncoder;
+        this.currentUsername = currentUsername;
+        this.myUserRepository = myUserRepository;
         this.restaurantRepository = restaurantRepository;
     }
 
@@ -62,7 +62,7 @@ public class RestaurantService {
     public void updateRestaurant(Long id, String email, String username, String restaurantName, String restaurantSpecificity, String restaurantAddress, String restaurantPhone) {
         Restaurant restaurant = restaurantRepository.findByUsername(currentUsername.displayCurrentUsername());
         if (restaurant != null && restaurant.getId().equals(id)) {
-            restaurantRepository.updateRestaurantRepo(id, email, username, restaurantName, restaurantSpecificity, restaurantAddress, restaurantPhone);
+            restaurantRepository.updateRestaurant(id, email, username, restaurantName, restaurantSpecificity, restaurantAddress, restaurantPhone);
         }
     }
 

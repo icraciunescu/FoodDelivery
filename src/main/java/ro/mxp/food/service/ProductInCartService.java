@@ -18,16 +18,15 @@ import java.util.stream.Collectors;
 @Service
 public class ProductInCartService {
 
-    @Autowired
-    private ClientRepository clientRepository;
-    @Autowired
-    private CurrentUsername currentUsername;
-
+    private final ClientRepository clientRepository;
+    private final CurrentUsername currentUsername;
     private final ModelMapper modelMapper = new ModelMapper();
-
     private final ProductInCartRepository productInCartRepository;
+
     @Autowired
-    public ProductInCartService(ProductInCartRepository productInCartRepository) {
+    public ProductInCartService(ClientRepository clientRepository, CurrentUsername currentUsername, ProductInCartRepository productInCartRepository) {
+        this.clientRepository = clientRepository;
+        this.currentUsername = currentUsername;
         this.productInCartRepository = productInCartRepository;
     }
 
@@ -59,7 +58,7 @@ public class ProductInCartService {
         ProductInCart productInCart = findProductInCart(id);
         if ((clientRepository.findByUsername(currentUsername.displayCurrentUsername()) != null)
                 && clientRepository.findByUsername(currentUsername.displayCurrentUsername()).equals(productInCart.getClient())) {
-            productInCartRepository.updateProductInCartRepo(id, quantity);
+            productInCartRepository.updateProductInCart(id, quantity);
         }
     }
 

@@ -20,7 +20,7 @@ public interface RestaurantRepository extends CrudRepository<Restaurant, Long> {
     @Modifying
     @Query("update Restaurant r set r.email=:email, r.username=:username, r.restaurantName=:restaurantName, r.restaurantSpecificity=:restaurantSpecificity," +
             "r.restaurantAddress=:restaurantAddress, r.restaurantPhone=:restaurantPhone where r.id=:id")
-    void updateRestaurantRepo(@Param("id") Long id, @Param("email") String email, @Param("username") String username, @Param("restaurantName") String restaurantName,
-                              @Param("restaurantSpecificity") String restaurantSpecificity, @Param("restaurantAddress") String restaurantAddress, @Param("restaurantPhone") String restaurantPhone);
+    void updateRestaurant(@Param("id") Long id, @Param("email") String email, @Param("username") String username, @Param("restaurantName") String restaurantName,
+                          @Param("restaurantSpecificity") String restaurantSpecificity, @Param("restaurantAddress") String restaurantAddress, @Param("restaurantPhone") String restaurantPhone);
 
 }

@@ -20,18 +20,18 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
 
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-    @Autowired
-    private CurrentUsername currentUsername;
-    @Autowired
-    private ProductBelongRestaurant productBelongRestaurant;
-
+    private final RestaurantRepository restaurantRepository;
+    private final CurrentUsername currentUsername;
+    private final ProductBelongRestaurant productBelongRestaurant;
     private final ModelMapper modelMapper = new ModelMapper();
-
     private final ProductRepository productRepository;
+
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(RestaurantRepository restaurantRepository, CurrentUsername currentUsername, ProductBelongRestaurant productBelongRestaurant,
+                          ProductRepository productRepository) {
+        this.restaurantRepository = restaurantRepository;
+        this.currentUsername = currentUsername;
+        this.productBelongRestaurant = productBelongRestaurant;
         this.productRepository = productRepository;
     }
 
@@ -65,7 +65,7 @@ public class ProductService {
         Product product = findProduct(id);
         Restaurant restaurant = restaurantRepository.findByUsername(currentUsername.displayCurrentUsername());
         if (productBelongRestaurant.productInRestaurant(restaurant, product)) {
-            productRepository.updateProductRepo(id, productName, productType, productPrice, productIngredients);
+            productRepository.updateProduct(id, productName, productType, productPrice, productIngredients);
         }
     }
 
